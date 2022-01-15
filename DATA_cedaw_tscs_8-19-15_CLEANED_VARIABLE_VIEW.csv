@@ -1,0 +1,408 @@
+country,String,30,0,COUNTRY NAME,None,None,30,Left,Nominal,Input
+year,Numeric,4,0,,None,None,8,Right,Scale,Input
+incl,Numeric,1,0,included in data - any non-1 should be deleted,None,None,8,Right,Nominal,Input
+banks,Numeric,4,0,,None,None,8,Right,Scale,Input
+mon_gdprat,Numeric,10,2,,None,None,8,Right,Scale,Input
+kkzge,Numeric,18,16,Kauffman et al govt effectivness LO --> HI,None,None,8,Right,Scale,Input
+kkzge_i,Numeric,18,16,,None,None,8,Right,Scale,Input
+polity2,Numeric,3,0,POLITY SCORE revised - LO is bad,None,None,8,Right,Scale,Input
+ptsas,Numeric,1,0,,None,None,8,Right,Nominal,Input
+ptsasinv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+poptot,Numeric,17,11,POPULATION total as of 2013,None,None,8,Right,Scale,Input
+poptotln,Numeric,9,7,POPULATION total as of 2013 natural log,None,None,8,Right,Scale,Input
+physint,Numeric,1,0,,None,None,8,Right,Nominal,Input
+taxgdp_best13,Numeric,12,11,Tax as % of GDP - best data,None,None,8,Right,Scale,Input
+gdpcappppln,Numeric,9,7,GDP per capita purch price parity natural log,None,None,8,Right,Scale,Input
+intl_bd,Numeric,6,0,BATTLE DEATHS intl war - pre-2009 - raw #,None,None,8,Right,Scale,Input
+civ_bd,Numeric,5,0,BATTLE DEATHS civil war - pre-2009 - raw #,None,None,8,Right,Scale,Input
+iccpr,Numeric,1,0,,None,None,8,Right,Nominal,Input
+cescr,Numeric,1,0,,None,None,8,Right,Nominal,Input
+cedaw,Numeric,1,0,CEDAW Ratified or not,"{0, not ratified}...",None,8,Right,Nominal,Input
+cedaw_opt,Numeric,1,0,OP ratified or not,"{0, not ratified}...",None,8,Right,Nominal,Input
+cat,Numeric,1,0,,None,None,8,Right,Nominal,Input
+croc,Numeric,1,0,,None,None,8,Right,Nominal,Input
+amnesty,Numeric,1,0,,None,None,8,Right,Nominal,Input
+statedept,Numeric,1,0,,None,None,8,Right,Nominal,Input
+disap,Numeric,4,0,,None,None,8,Right,Scale,Input
+kill,Numeric,1,0,,None,None,8,Right,Nominal,Input
+polpris,Numeric,1,0,,None,None,8,Right,Nominal,Input
+tort,Numeric,1,0,,None,None,8,Right,Nominal,Input
+old_empinx,Numeric,2,0,,None,None,8,Right,Nominal,Input
+new_empinx,Numeric,2,0,,None,None,8,Right,Nominal,Input
+assn,Numeric,1,0,,None,None,8,Right,Nominal,Input
+formov,Numeric,1,0,,None,None,8,Right,Nominal,Input
+dommov,Numeric,1,0,,None,None,8,Right,Nominal,Input
+old_move,Numeric,3,0,,None,None,8,Right,Scale,Input
+speech,Numeric,1,0,,None,None,8,Right,Nominal,Input
+elecsd,Numeric,3,0,,None,None,8,Right,Scale,Input
+old_relfre,Numeric,4,0,,None,None,8,Right,Scale,Input
+new_relfre,Numeric,1,0,,None,None,8,Right,Nominal,Input
+worker,Numeric,1,0,,None,None,8,Right,Nominal,Input
+wecon,Numeric,1,0,CIRI womens economic rights LO --> HI,None,None,8,Right,Nominal,Input
+wopol,Numeric,1,0,CIRI womens political rights LO --> HI,None,None,8,Right,Nominal,Input
+wosoc,Numeric,1,0,CIRI womens social rights LO --> HI,None,None,8,Right,Nominal,Input
+injud,Numeric,4,0,,None,None,8,Right,Scale,Input
+welect,Numeric,17,16,% women elected to lower house,None,None,8,Right,Scale,Input
+wtot,Numeric,17,16,% women total in lower house,None,None,8,Right,Scale,Input
+l_quota_election_0,Numeric,9,6,,None,None,8,Right,Scale,Input
+p_quota_election_0,Numeric,9,8,,None,None,8,Right,Scale,Input
+l_quota_diff,Numeric,10,9,,None,None,8,Right,Scale,Input
+p_quota_diff,Numeric,10,8,,None,None,8,Right,Scale,Input
+quotamet,Numeric,1,0,,None,None,8,Right,Nominal,Input
+l_quota_election,Numeric,1,0,QUOTA for legislature used in election or not,"{0, not used}...",None,8,Right,Nominal,Input
+l_quota_law_0,Numeric,9,8,,None,None,8,Right,Scale,Input
+l_quota_law,Numeric,1,0,QUOTA for legislature or not,"{0, no}...",None,8,Right,Nominal,Input
+p_quota_election,Numeric,1,0,QUOTA for party used in election or not,"{0, not used}...",None,8,Right,Nominal,Input
+p_quota_law_0,Numeric,9,6,,None,None,8,Right,Scale,Input
+p_quota_law,Numeric,1,0,QUOTA for party lists or not,"{0, no}...",None,8,Right,Nominal,Input
+electyrBG,Numeric,1,0,,None,None,8,Right,Nominal,Input
+leg_type,Numeric,1,0,,None,None,8,Right,Nominal,Input
+distmag,Numeric,9,7,,None,None,8,Right,Scale,Input
+homi_genrat,Numeric,10,9,,None,None,8,Right,Scale,Input
+lrw7,Numeric,1,0,,None,None,8,Right,Nominal,Input
+lrw8,Numeric,3,1,,None,None,8,Right,Scale,Input
+taxquint13,Numeric,1,0,,None,None,8,Right,Nominal,Input
+croc_opt,Numeric,1,0,,None,None,8,Right,Nominal,Input
+gdpcappppcon,Numeric,17,14,,None,None,8,Right,Scale,Input
+primeng_i,Numeric,17,15,,None,None,8,Right,Scale,Input
+child_gov_combat,Numeric,1,0,,None,None,8,Right,Nominal,Input
+primeng,Numeric,9,7,,None,None,8,Right,Scale,Input
+child_gov,Numeric,1,0,,None,None,8,Right,Nominal,Input
+child_nonstate,Numeric,1,0,,None,None,8,Right,Nominal,Input
+femlab,Numeric,9,6,,None,None,8,Right,Scale,Input
+femprimedrat,Numeric,9,7,Females as % of males in primary ed,None,None,8,Right,Scale,Input
+femprimedrat_i,Numeric,17,15,Females as % of males in primary ed INTERPOLATED,None,None,8,Right,Scale,Input
+polityquint,Numeric,1,0,,None,None,8,Right,Nominal,Input
+ptss,Numeric,1,0,,None,None,8,Right,Nominal,Input
+ptssinv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+ciricode,Numeric,3,0,,None,None,8,Right,Scale,Input
+ptsa,Numeric,1,0,,None,None,8,Right,Nominal,Input
+femparl,Numeric,17,16,% female parliamentarians in lower house,None,None,8,Right,Scale,Input
+elf_r,Numeric,17,16,,None,None,8,Right,Scale,Input
+law_order_prs_new,Numeric,9,8,PRS law and order index LO is bad,None,None,8,Right,Scale,Input
+cedaw_join,Numeric,1,0,CEDAW year ratified dummy,"{0, not ratified this year}...",None,8,Right,Nominal,Input
+cedaw_optjoin,Numeric,1,0,CEDAW year ratified dummy,"{0, not ratified this year}...",None,8,Right,Nominal,Input
+cedawres,String,17,0,CEDAW RESERVATIONS 4-category LO is major reserv,"{1, major impact}...",None,17,Left,Nominal,Input
+cedawreswt,Numeric,1,0,? Landsman variab ?,None,None,8,Right,Nominal,Input
+child_gov_k,Numeric,1,0,,None,None,8,Right,Nominal,Input
+igoprop,Numeric,10,9,,None,None,8,Right,Scale,Input
+intl_war,Numeric,1,0,,None,None,8,Right,Nominal,Input
+civ_war,Numeric,1,0,,None,None,8,Right,Nominal,Input
+fsi,Numeric,9,6,,None,None,8,Right,Scale,Input
+mountain,Numeric,2,0,,None,None,8,Right,Scale,Input
+forest,Numeric,2,0,,None,None,8,Right,Scale,Input
+vanind,Numeric,10,9,,None,None,8,Right,Scale,Input
+prio_cwdur,Numeric,2,0,,None,None,8,Right,Scale,Input
+igotot,Numeric,3,0,,None,None,8,Right,Scale,Input
+nonfed,String,12,0,,None,None,12,Left,Nominal,Input
+durable,Numeric,3,0,,None,None,8,Right,Scale,Input
+inst,Numeric,1,0,INST have either min or subcab,"{0, neither}...",99,8,Right,Nominal,Input
+inst_3,Numeric,9,8,,None,None,8,Right,Scale,Input
+inst2,Numeric,1,0,,None,None,8,Right,Nominal,Input
+parl_pres,Numeric,9,8,,None,None,8,Right,Scale,Input
+parldum,Numeric,1,0,,None,None,8,Right,Nominal,Input
+presdum,Numeric,1,0,,None,None,8,Right,Nominal,Input
+authdum,Numeric,1,0,,None,None,8,Right,Nominal,Input
+mixdum,Numeric,1,0,,None,None,8,Right,Nominal,Input
+years_in,Numeric,3,0,,None,None,8,Right,Scale,Input
+igomean,Numeric,9,6,,None,None,8,Right,Scale,Input
+rotberg,String,9,0,,None,None,9,Left,Nominal,Input
+rpc1,Numeric,10,9,,None,None,8,Right,Scale,Input
+rpc3,Numeric,10,9,,None,None,8,Right,Scale,Input
+secnum,Numeric,4,0,,None,None,8,Right,Scale,Input
+secdens,Numeric,9,8,,None,None,8,Right,Scale,Input
+ngomem,Numeric,9,5,,None,None,8,Right,Scale,Input
+latitude,Numeric,10,8,,None,None,8,Right,Scale,Input
+ethnolin,Numeric,2,0,,None,None,8,Right,Scale,Input
+ethnic_h,Numeric,4,1,,None,None,8,Right,Scale,Input
+ethnoli1,Numeric,3,0,,None,None,8,Right,Scale,Input
+ethnoli2,Numeric,11,10,,None,None,8,Right,Scale,Input
+ethnic_f,Numeric,11,10,,None,None,8,Right,Scale,Input
+linguist,Numeric,11,10,,None,None,8,Right,Scale,Input
+religiou,Numeric,11,10,,None,None,8,Right,Scale,Input
+wtomem,String,10,0,,None,None,10,Left,Nominal,Input
+yrdum1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum2,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum3,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum4,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum5,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum6,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum7,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum8,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum9,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum10,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum11,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum12,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum13,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum14,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum15,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum16,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum17,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum18,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum19,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum20,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum21,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum22,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum23,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum24,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum25,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum26,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum27,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum28,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum29,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum30,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum31,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum32,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum33,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum34,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum35,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum36,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum37,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum38,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum39,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum40,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum41,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum42,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum43,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum44,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum45,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum46,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum47,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum48,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum49,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum50,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum51,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum52,Numeric,1,0,,None,None,8,Right,Nominal,Input
+yrdum53,Numeric,1,0,,None,None,8,Right,Nominal,Input
+government_stability_prs_new,Numeric,9,8,,None,None,8,Right,Scale,Input
+socioeconomic_conditions_prs_new,Numeric,9,8,,None,None,8,Right,Scale,Input
+investment_profile_prs_new,Numeric,9,8,,None,None,8,Right,Scale,Input
+internal_conflict_prs_new,Numeric,9,8,,None,None,8,Right,Scale,Input
+external_conflict_prs_new,Numeric,9,7,,None,None,8,Right,Scale,Input
+corruption_prs_new,Numeric,10,9,,None,None,8,Right,Scale,Input
+military_politics_prs_new,Numeric,10,9,,None,None,8,Right,Scale,Input
+religion_politics_prs_new,Numeric,10,9,,None,None,8,Right,Scale,Input
+ethnic_tensions_prs_new,Numeric,10,9,,None,None,8,Right,Scale,Input
+democratic_account_prs_new,Numeric,9,8,,None,None,8,Right,Scale,Input
+bureaucratic_quality_prs_new,Numeric,10,9,,None,None,8,Right,Scale,Input
+whoccode,Numeric,4,0,,None,None,8,Right,Scale,Input
+africa,Numeric,1,0,,None,None,8,Right,Nominal,Input
+america,Numeric,1,0,,None,None,8,Right,Nominal,Input
+europe,Numeric,1,0,,None,None,8,Right,Nominal,Input
+pacific,Numeric,1,0,,None,None,8,Right,Nominal,Input
+asia,Numeric,1,0,,None,None,8,Right,Nominal,Input
+mena,Numeric,1,0,,None,None,8,Right,Nominal,Input
+cerd,String,12,0,,None,None,12,Left,Nominal,Input
+cescrres,String,17,0,,None,None,17,Left,Nominal,Input
+ccprres,String,17,0,,None,None,17,Left,Nominal,Input
+cerdres,String,17,0,,None,None,17,Left,Nominal,Input
+catres,String,17,0,,None,None,17,Left,Nominal,Input
+crcres,String,17,0,,None,None,17,Left,Nominal,Input
+structure,Numeric,9,8,,None,None,8,Right,Scale,Input
+environment,Numeric,9,8,,None,None,8,Right,Scale,Input
+values,Numeric,9,7,,None,None,8,Right,Scale,Input
+impact,Numeric,9,8,,None,None,8,Right,Scale,Input
+cowcode,Numeric,3,0,,None,None,8,Right,Scale,Input
+politycode,Numeric,3,0,,None,None,8,Right,Scale,Input
+uncode,Numeric,3,0,,None,None,8,Right,Scale,Input
+flag,Numeric,1,0,,None,None,8,Right,Nominal,Input
+fragment,Numeric,1,0,,None,None,8,Right,Nominal,Input
+democ,Numeric,3,0,,None,None,8,Right,Scale,Input
+autoc,Numeric,3,0,,None,None,8,Right,Scale,Input
+polity,Numeric,3,0,,None,None,8,Right,Scale,Input
+xrreg,Numeric,3,0,,None,None,8,Right,Scale,Input
+xrcomp,Numeric,3,0,,None,None,8,Right,Scale,Input
+xropen,Numeric,3,0,,None,None,8,Right,Scale,Input
+xconst,Numeric,3,0,,None,None,8,Right,Scale,Input
+parreg,Numeric,3,0,,None,None,8,Right,Scale,Input
+parcomp,Numeric,3,0,,None,None,8,Right,Scale,Input
+exrec,Numeric,3,0,,None,None,8,Right,Scale,Input
+exconst,Numeric,3,0,,None,None,8,Right,Scale,Input
+polcomp,Numeric,3,0,,None,None,8,Right,Scale,Input
+prior,Numeric,3,0,,None,None,8,Right,Scale,Input
+emonth,Numeric,2,0,,None,None,8,Right,Nominal,Input
+eday,Numeric,2,0,,None,None,8,Right,Scale,Input
+eyear,Numeric,4,0,,None,None,8,Right,Scale,Input
+eprec,Numeric,1,0,,None,None,8,Right,Nominal,Input
+interim,Numeric,3,0,,None,None,8,Right,Scale,Input
+post,Numeric,3,0,,None,None,8,Right,Scale,Input
+change,Numeric,3,0,,None,None,8,Right,Scale,Input
+d4,Numeric,1,0,,None,None,8,Right,Nominal,Input
+sf,Numeric,1,0,,None,None,8,Right,Nominal,Input
+regtrans,Numeric,3,0,,None,None,8,Right,Scale,Input
+ptssl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+taxgdpquint,Numeric,1,0,,None,None,8,Right,Nominal,Input
+taxgdpdec,Numeric,2,0,,None,None,8,Right,Nominal,Input
+polity2pos,Numeric,2,0,,None,None,8,Right,Nominal,Input
+gdpcapquint,Numeric,1,0,,None,None,8,Right,Nominal,Input
+childgcombatl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+child_nonstatel1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+res,Numeric,13,12,,None,None,8,Right,Scale,Input
+taxgdp,Numeric,12,11,,None,None,8,Right,Scale,Input
+v1,Numeric,3,0,,None,None,8,Right,Scale,Input
+taxquintpolquint,Numeric,2,0,,None,None,8,Right,Nominal,Input
+taxquintpolquint2,Numeric,2,0,,None,None,8,Right,Nominal,Input
+polquint,Numeric,1,0,,None,None,8,Right,Nominal,Input
+taxpol,Numeric,11,10,,None,None,8,Right,Scale,Input
+const_gv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+stat_gv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+subcab_gv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+prog_gv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+const_dv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+stat_dv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+subcab_dv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+prog_dv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+homi_tot,Numeric,5,0,,None,None,8,Right,Scale,Input
+homi_fem,Numeric,5,0,,None,None,8,Right,Scale,Input
+homi_male,Numeric,5,0,,None,None,8,Right,Scale,Input
+WHOcc,Numeric,4,0,,None,None,8,Right,Scale,Input
+homi_genratl1,Numeric,10,9,,None,None,8,Right,Scale,Input
+prim_ed_fem,Numeric,9,7,Female as % of primary enrollment,None,None,8,Right,Scale,Input
+prim_ed_fem_i,Numeric,17,15,INTEPRPOLATED Female as % of primary enrollment,None,None,8,Right,Scale,Input
+diff_net_prim_i,Numeric,12,10,INTERPOLATED Female minus male primary enrollment ?,None,None,8,Right,Scale,Input
+fem_net_prim,Numeric,9,7,Female net primary enrollment,None,None,8,Right,Scale,Input
+fem_net_prim_i,Numeric,17,15,INTERPOLATED Female net primary enrollment,None,None,8,Right,Scale,Input
+male_net_prim,Numeric,9,6,Male net primary enrollment,None,None,8,Right,Scale,Input
+male_net_prim_i,Numeric,17,14,INTERPOLATED Male net primary enrollment,None,None,8,Right,Scale,Input
+wo_emp,Numeric,9,7,Women as % of employed,None,None,8,Right,Scale,Input
+wo_emp_i,Numeric,17,15,INTERPOLATED Women as % of employed,None,None,8,Right,Scale,Input
+genratioed,Numeric,9,6,Females as % of males in prim & sec education,None,None,8,Right,Scale,Input
+genratioed_i,Numeric,17,15,INTERPOLATED Females as % males in prim & sec education,None,None,8,Right,Scale,Input
+cedaw_rats,Numeric,3,0,Cumulative CEDAW ratifications,None,None,8,Right,Scale,Input
+femlit11,Numeric,9,7,Female literacy % as of 2011,None,None,8,Right,Scale,Input
+femlit11_i,Numeric,17,15,INTERPOLATED Female literacy % as of 2011,None,None,8,Right,Scale,Input
+imr,Numeric,9,8,Infant mortality (# per 1000),None,None,8,Right,Scale,Input
+imr_i,Numeric,17,16,INTERPOLATED Infant mortality (# per 1000),None,None,8,Right,Scale,Input
+cpi08,Numeric,9,8,Corruption perceptions index - 2008 LO is bad,None,None,8,Right,Scale,Input
+cedaw_l,String,12,0,? CEDAW (1979) ?,None,None,12,Left,Nominal,Input
+homi_genratf1,Numeric,10,9,,None,None,8,Right,Scale,Input
+homi_genratf3,Numeric,10,9,,None,None,8,Right,Scale,Input
+homi_genratf5,Numeric,10,9,,None,None,8,Right,Scale,Input
+wopol_l1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+lrw8_f1,Numeric,9,8,,None,None,8,Right,Scale,Input
+lrw8_f5,Numeric,9,8,,None,None,8,Right,Scale,Input
+constat_gv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+urbanpop,Numeric,9,7,,None,None,8,Right,Scale,Input
+constat_dv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+inst_dv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+inst_gv,Numeric,1,0,,None,None,8,Right,Nominal,Input
+lrw8_f3,Numeric,9,8,,None,None,8,Right,Scale,Input
+quota,Numeric,1,0,QUOTA has party or leg quota,"{0, no quotas}...",None,8,Right,Nominal,Input
+presidential,Numeric,1,0,,None,None,8,Right,Nominal,Input
+ptsasinvl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+killl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+polprisl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+tortl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+assnl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+formovl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+speechl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+workerl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+wopoll1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+wosocl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+weconl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+relfrel1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+ptsasinvf1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+ptsasinvf5,Numeric,1,0,,None,None,8,Right,Nominal,Input
+physintf1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+physintf5,Numeric,1,0,,None,None,8,Right,Nominal,Input
+physintl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+dommovl1,Numeric,1,0,,None,None,8,Right,Nominal,Input
+kkzccorr_i,Numeric,18,16,,None,None,8,Right,Scale,Input
+kkzpstab,Numeric,18,16,,None,None,8,Right,Scale,Input
+kkzrqual,Numeric,18,16,,None,None,8,Right,Scale,Input
+kkzrlaw,Numeric,18,16,,None,None,8,Right,Scale,Input
+v2,Numeric,18,16,,None,None,8,Right,Scale,Input
+kkzpstab_i,Numeric,18,16,,None,None,8,Right,Scale,Input
+kkzrqual_i,Numeric,18,16,,None,None,8,Right,Scale,Input
+kkzrlaw_i,Numeric,18,16,,None,None,8,Right,Scale,Input
+cpi11,Numeric,9,8,,None,None,8,Right,Scale,Input
+const,Numeric,1,0,CONST gender provision in constitution or not,"{0, no}...",None,8,Right,Nominal,Input
+statute,Numeric,1,0,STATUTE gender provision in statute or not,"{0, no}...",None,8,Right,Nominal,Input
+min,Numeric,1,0,MIN gender ministry or not,"{0, no}...",None,8,Right,Nominal,Input
+subcab,Numeric,1,0,SUBCAB gender subcabinet or not,"{0, no}...",None,8,Right,Nominal,Input
+advisory,Numeric,1,0,ADVISORY gender advisory board or not,"{0, no}...",None,8,Right,Nominal,Input
+committee,Numeric,1,0,COMMITTEE gender legislative committee or not,"{0, no}...",None,8,Right,Nominal,Input
+caucus,Numeric,1,0,CAUCUS womens caucus in legislature or not,"{0, no}...",None,8,Right,Nominal,Input
+constemp,Numeric,1,0,CONSTEMP gender employment provision in constitution or not,"{0, no}...",None,8,Right,Nominal,Input
+statemp,Numeric,1,0,STATEMP gender employment statute or not,"{0, no}...",None,8,Right,Nominal,Input
+constpay,Numeric,1,0,CONSTPAY gender equal pay provision in constitution or not,"{0, no}...",None,8,Right,Nominal,Input
+statpay,Numeric,1,0,STATPAY gender equal pay statute or not,"{0, no}...",None,8,Right,Nominal,Input
+subcablab,Numeric,1,0,SUBCABLAB gender subcabinet for labor issues,"{0, no}...",None,8,Right,Nominal,Input
+consted,Numeric,1,0,CONSTED gender education provision in constitution or not,"{0, no}...",None,8,Right,Nominal,Input
+stated,Numeric,1,0,STATED gender education statute or not,"{0, no}...",None,8,Right,Nominal,Input
+subcabed,Numeric,1,0,SUBCABED gender subcabinet for education issues,"{0, no}...",None,8,Right,Nominal,Input
+maternal,Numeric,1,0,MATERNAL maternal health program or not,"{0, no}...",9999,8,Right,Nominal,Input
+p_quota_law_per,Numeric,8,2,QUOTA for party lists - actual %,None,None,17,Right,Scale,Input
+p_quota_election_per,Numeric,8,2,QUOTA for party used in election - actual %,None,None,22,Right,Scale,Input
+l_quota_law_per,Numeric,8,2,QUOTA for legislature - actual %,None,None,17,Right,Scale,Input
+l_quota_election_per,Numeric,8,2,QUOTA for legislature used in election - actual %,None,None,22,Right,Scale,Input
+min_surv,Numeric,8,2,,"{.00, no}...",None,10,Right,Nominal,Input
+const_surv,Numeric,8,2,,"{.00, no}...",None,12,Right,Nominal,Input
+constemp_surv,Numeric,8,2,,"{.00, no}...",None,15,Right,Nominal,Input
+statemp_surv,Numeric,8,2,,"{.00, no}...",None,14,Right,Nominal,Input
+constpay_surv,Numeric,8,2,,"{.00, no}...",None,15,Right,Nominal,Input
+statpay_surv,Numeric,8,2,,"{.00, no}...",None,14,Right,Nominal,Input
+consted_surv,Numeric,8,2,,"{.00, no}...",None,14,Right,Nominal,Input
+stated_surv,Numeric,8,2,,"{.00, no}...",None,13,Right,Nominal,Input
+commcauc,Numeric,8,2,COMMCAUC has leg committe or caucus,"{.00, neither}...",None,10,Right,Nominal,Input
+comply_inst,Numeric,8,2,COMPLY_INST has ministry and-or subcabinet,"{.00, neither}...",None,13,Right,Nominal,Input
+polity2_fully,Numeric,8,2,State is FULLY DEMOCRATIC or not,"{.00, not fully democratic}...",99,15,Right,Nominal,Input
+polity2_3cat,Numeric,8,2,POLITY2 - 3 Categories,"{-1.00, not democratic}...",99,14,Right,Scale,Input
+polity2_fully_8910,Numeric,8,2,State is IN TOP 3 POLITY2 CATEGORIES or not,"{.00, not in top 3 polity2 categories}...",99,20,Right,Nominal,Input
+comply_gen,Numeric,8,2,State has constitutional provision OR general law,"{.00, neither}...",99,12,Right,Nominal,Input
+comply_ed,Numeric,8,2,State has constitutional provision OR general law on primary education,"{.00, neither}...",99,11,Right,Nominal,Input
+comply_emp,Numeric,8,2,State has constitutional provision OR general law on employment,"{.00, neither}...",99,12,Right,Nominal,Input
+comply_pay,Numeric,8,2,State has constitutional provision OR general law on equal pay,"{.00, neither}...",99,12,Right,Nominal,Input
+comply_gen_lead1,Numeric,8,2,LEAD comply_gen 1 yr,"{.00, did not have next year}...",None,18,Right,Scale,Input
+comply_ed_lead1,Numeric,8,2,LEAD comply_ed 1 yr,"{.00, did not have next year}...",None,17,Right,Scale,Input
+comply_emp_lead1,Numeric,8,2,LEAD comply_emp 1 yr,"{.00, did not have next year}...",None,18,Right,Scale,Input
+comply_pay_lead1,Numeric,8,2,LEAD comply_pay 1 yr,"{.00, did not have next year}...",None,18,Right,Scale,Input
+comply_inst_lead1,Numeric,8,2,LEAD comply_inst 1 yr,"{.00, did not have next year}...",None,19,Right,Scale,Input
+comply_gen_lead5,Numeric,8,2,LEAD comply_gen 5 yr,"{.00, did not have 5 years hence}...",None,18,Right,Scale,Input
+comply_ed_lead5,Numeric,8,2,LEAD comply_ed 5 yr,"{.00, did not have 5 years hence}...",None,17,Right,Scale,Input
+comply_emp_lead5,Numeric,8,2,LEAD comply_emp 5 yr,"{.00, did not have 5 years hence}...",None,18,Right,Scale,Input
+comply_pay_lead5,Numeric,8,2,LEAD comply_pay 5 yr,"{.00, did not have 5 years hence}...",None,18,Right,Scale,Input
+comply_inst_lead5,Numeric,8,2,LEAD comply_inst 5 yr,"{.00, did not have 5 years hence}...",None,19,Right,Scale,Input
+const_lag1,Numeric,1,0,LAG const 1 yr,"{0, did not have last year}...",None,12,Right,Scale,Input
+stat_lag1,Numeric,1,0,LAG  stat 1 yr,"{0, did not have last year}...",None,11,Right,Scale,Input
+consted_lag1,Numeric,1,0,LAG consted 1 yr,"{0, did not have last year}...",None,14,Right,Scale,Input
+stated_lag1,Numeric,1,0,LAG stated 1 yr,"{0, did not have last year}...",None,13,Right,Scale,Input
+constemp_lag1,Numeric,1,0,LAG constemp 1 yr,"{0, did not have last year}...",None,15,Right,Scale,Input
+statemp_lag1,Numeric,1,0,LAG statemp 1 yr,"{0, did not have last year}...",None,14,Right,Scale,Input
+constpay_lag1,Numeric,1,0,LAG constpay 1 yr,"{0, did not have last year}...",None,15,Right,Scale,Input
+statpay_lag1,Numeric,1,0,LAG statpay 1 yr,"{0, did not have last year}...",None,14,Right,Scale,Input
+const_lag5,Numeric,1,0,LAG const 5 yr,"{0, did not have 5 years ago}...",None,12,Right,Scale,Input
+stat_lag5,Numeric,1,0,LAG  stat 5 yr,"{0, did not have 5 years ago}...",None,11,Right,Scale,Input
+consted_lag5,Numeric,1,0,LAG consted 5 yr,"{0, did not have 5 years ago}...",None,14,Right,Scale,Input
+stated_lag5,Numeric,1,0,LAG stated 5 yr,"{0, did not have 5 years ago}...",None,13,Right,Scale,Input
+constemp_lag5,Numeric,1,0,LAG constemp 5 yr,"{0, did not have 5 years ago}...",None,15,Right,Scale,Input
+statemp_lag5,Numeric,1,0,LAG statemp 5 yr,"{0, did not have 5 years ago}...",None,14,Right,Scale,Input
+constpay_lag5,Numeric,1,0,LAG constpay 5 yr,"{0, did not have 5 years ago}...",None,15,Right,Scale,Input
+statpay_lag5,Numeric,1,0,LAG statpay 5 yr,"{0, did not have 5 years ago}...",None,14,Right,Scale,Input
+comply_gen_lag1,Numeric,8,2,LAG comply_gen 1 yr,"{.00, did not have last year}...",None,17,Right,Scale,Input
+comply_ed_lag1,Numeric,8,2,LAG comply_ed 1 yr,"{.00, did not have last year}...",None,16,Right,Scale,Input
+comply_emp_lag1,Numeric,8,2,LAG comply_emp 1 yr,"{.00, did not have last year}...",None,17,Right,Scale,Input
+comply_pay_lag1,Numeric,8,2,LAG comply_pay 1 yr,"{.00, did not have last year}...",None,17,Right,Scale,Input
+comply_inst_lag1,Numeric,8,2,LAG comply_inst 1 yr,"{.00, did not have last year}...",None,18,Right,Scale,Input
+comply_gen_lag5,Numeric,8,2,LAG comply_gen 5 yr,"{.00, did not have 5 years ago}...",None,17,Right,Scale,Input
+comply_ed_lag5,Numeric,8,2,LAG comply_ed 5 yr,"{.00, did not have 5 years ago}...",None,16,Right,Scale,Input
+comply_emp_lag5,Numeric,8,2,LAG comply_emp 5 yr,"{.00, did not have 5 years ago}...",None,17,Right,Scale,Input
+comply_pay_lag5,Numeric,8,2,LAG comply_pay 5 yr,"{.00, did not have 5 years ago}...",None,17,Right,Scale,Input
+comply_inst_lag5,Numeric,8,2,LAG comply_inst 5 yr,"{.00, did not have 5 years ago}...",None,18,Right,Scale,Input
+wopol_lag1,Numeric,1,0,LAG wopol 1 yr,None,None,12,Right,Scale,Input
+wecon_lag1,Numeric,1,0,LAG wecon 1 yr,None,None,12,Right,Scale,Input
+wosoc_lag1,Numeric,1,0,LAG wosoc 1 yr,None,None,12,Right,Scale,Input
+welect_lag1,Numeric,17,16,LAG welect 1 yr,None,None,19,Right,Scale,Input
+wtot_lag1,Numeric,17,16,LAG wtot 1 yr,None,None,19,Right,Scale,Input
+femprimedrat_i_lag1,Numeric,17,15,LAG femprimedrat_i 1 yr,None,None,21,Right,Scale,Input
+wopol_lag5,Numeric,1,0,LAG wopol 5 yr,None,None,12,Right,Scale,Input
+wecon_lag5,Numeric,1,0,LAG wecon 5 yr,None,None,12,Right,Scale,Input
+wosoc_lag5,Numeric,1,0,LAG wosoc 5 yr,None,None,12,Right,Scale,Input
+welect_lag5,Numeric,17,16,LAG welect 5 yr,None,None,19,Right,Scale,Input
+wtot_lag5,Numeric,17,16,LAG wtot 5 yr,None,None,19,Right,Scale,Input
+femprimedrat_i_lag5,Numeric,17,15,LAG femprimedrat_i 5 yr,None,None,21,Right,Scale,Input
+euapp,Numeric,8,2,EU applying or not,"{.00, not applying}...",None,10,Right,Nominal,Input
+yrsbehind,Numeric,8,2,# yrs behind in reporting,None,None,11,Right,Scale,Input
+cedaw_x_inst,Numeric,8,2,INTERACTION cedaw x inst,"{.00, not both}...",None,14,Right,Nominal,Input
+parl,Numeric,8,2,PARL have either committee or caucus,"{.00, neither}...",99,10,Right,Nominal,Input
+cedaw_x_parl,Numeric,8,2,INTERACTION cedaw x parl,"{.00, not both}...",None,14,Right,Nominal,Input
