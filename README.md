@@ -3,3 +3,6 @@
 # Paper
 Please see main.pdf.
 # References
+Wendling, Z. A., Emerson, J. W., de Sherbinin, A., Esty, D. C., et al. (2020). 2020
+Environmental Performance Index. New Haven, CT: Yale Center for Environmental
+Law & Policy. https://epi.yale.edu/ 
