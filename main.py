@@ -94,8 +94,9 @@ if __name__ == "__main__":
 			print("")
 
 		t = np.array(t)
-		X = np.array(X,dtype=object)
-
+		print("before:",X)
+		X = np.array(X,dtype=object).T
+		print("after:",X)
 		country.append(entry[0]) # code
 		country.append(entry[1]) # iso
 		country.append(entry[2]) # country
@@ -118,11 +119,11 @@ if __name__ == "__main__":
 	# including a demo below
 
 	print(countries[0][1])
-	print("t:",countries[0][3])
 	print("len(t):",len(countries[0][3]))
-	print("len(x1):",len(countries[0][4][0]))
-	print("len(x2):",len(countries[0][4][1]))
-	print("len(x3):",len(countries[0][4][2]))
+	print("len(X):",np.size(countries[0][4],1))
+	print("len(x1):",len(countries[0][4][:,0]))
+	print("len(x2):",len(countries[0][4][:,1]))
+	print("len(x3):",len(countries[0][4][:,2]))
 
 	if(mode == 1):
 
@@ -130,12 +131,7 @@ if __name__ == "__main__":
 			print("mode 1: ridge regression")
 
 		model = Ridge(alpha=1.0)
-
-		#t = np.array(dataset[''])
-		
-		#X = np.array(dataset['Year'])
-		
-
+		model.fit(X,t)
 	
 	
 
