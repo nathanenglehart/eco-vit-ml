@@ -1,7 +1,11 @@
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import Ridge
+
+#from sklearn.linear_model import Ridge
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
@@ -134,19 +138,32 @@ if __name__ == "__main__":
 		if(verbose):
 			print("mode 1: ridge regression")
 
+		degree = 4
+		model=make_pipeline(PolynomialFeatures(degree),Ridge())
+		model.fit(countries[0][4],countries[0][3])
+
+		
+
+		#1995, 43.09, 26.9, 53.77
+
 		model = Ridge(alpha=1.0)	
 		model.fit(countries[0][4],countries[0][3])
+		print(model.predict([np.array([1995,43.09,26.9,53.77])]))
 
 		year = 1995
 
 		preds = list()
 		years = list()
-
+		
 		for i in range(26):
 			years.append(year)
+			year_idx = year - 1995
 			year += 1
-			#preds.append(model.predict([np.array([year,43.97,24,72])]))
-			preds.append(model.predict([np.array([year,43.89,26.90,66.79])]))
+			#print(year_idx)
+			#print(country[0][4])
+			preds.append(model.predict([countries[0][4][year_idx]]))
+
+#			preds.append(model.predict([np.array([year,43.89,26.90,66.79])]))
 
 
 		preds = np.array(preds)
@@ -158,5 +175,3 @@ if __name__ == "__main__":
 		plt.xlabel('Years')
 		plt.ylabel('cda')
 		plt.show()
-		print(model.coef_)
-		print(model.intercept_)
