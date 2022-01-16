@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 from sklearn.linear_model import Ridge
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
@@ -27,7 +28,7 @@ if __name__ == "__main__":
 	del grl_dataset['code']
 	del tcl_dataset['code']
 	del wtl_dataset['code']
-	
+
 	del grl_dataset['iso']
 	del tcl_dataset['iso']
 	del wtl_dataset['iso']
@@ -47,7 +48,7 @@ if __name__ == "__main__":
 	country_rows = list()
 
 	for i in range(len(cda_dataset)):
-		
+
 		row = np.array(cda_dataset.iloc[i])
 
 		if row[2] in countries:
@@ -56,25 +57,27 @@ if __name__ == "__main__":
 	country_rows = np.array(country_rows)
 
 	# 3 values at first then cda for 25, grl for 25, tcl for 25, wtl for 25
-	
+
 	countries = list()
 	country = list()
 
 	for entry in country_rows:
 
-		t = list()
-		X = list()
-		col = list()
+		t = []
+		#X = [[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]]
+		X = [[1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020]]
+		col = []
 		col_count = 0
 
-		feature = 1
-		
+		feature = 2
+
 		for i in range(len(cda_dataset.columns)):
 
 			if i < 29 and i >= 3:
 				t.append(entry[i])
 				if i == 28 and verbose:
 					print("added t")
+					print("added x1")
 
 			if i >= 29:
 				col.append(entry[i])
@@ -89,14 +92,12 @@ if __name__ == "__main__":
 				X.append(np.array(col))
 				col.clear()
 				col_count = 0
-		
+
 		if verbose:
 			print("")
 
 		t = np.array(t)
-		print("before:",X)
 		X = np.array(X,dtype=object).T
-		print("after:",X)
 		country.append(entry[0]) # code
 		country.append(entry[1]) # iso
 		country.append(entry[2]) # country
@@ -106,11 +107,11 @@ if __name__ == "__main__":
 		countries.append(np.array(country,dtype=object))
 
 		country.clear()
-	
+
 	countries = np.array(countries)
-	
+
 	# indexing works as follows
-	# countries[0] gives the first country from our list of selected countries in alphabetical order 
+	# countries[0] gives the first country from our list of selected countries in alphabetical order
 	# e.g. if our list contains Australia, Brazil, and Columbia, countries[0] would give Australia
 	# countries[0][1] gives the iso for the first country and countries[0][2] gives the country name
 	# for the above example [0][1] would give AUS and [0][2] would give Austrialia
@@ -118,22 +119,44 @@ if __name__ == "__main__":
 	# countries[0][4] gives the train martix, X, in the form of an np array of np arrays (each array is a column)
 	# including a demo below
 
-	print(countries[0][1])
-	print("len(t):",len(countries[0][3]))
-	print("len(X):",np.size(countries[0][4],1))
-	print("len(x1):",len(countries[0][4][:,0]))
-	print("len(x2):",len(countries[0][4][:,1]))
-	print("len(x3):",len(countries[0][4][:,2]))
+	print(countries[0][1]) # country iso
+	print("len(t):",len(countries[0][3])) # target vector i.e. cda
+	print("len(X):",np.size(countries[0][4],1)) # number of features
+	print("len(x1):",len(countries[0][4][:,0])) # year
+	print("len(x2):",len(countries[0][4][:,1])) # grl (grassland)
+	print("len(x3):",len(countries[0][4][:,2])) # tcl (tree cover)
+	print("len(x4):",len(countries[0][4][:,3])) # wtl (wetland)
+
+	print(countries[0][4])
 
 	if(mode == 1):
 
 		if(verbose):
 			print("mode 1: ridge regression")
 
-		model = Ridge(alpha=1.0)
-		model.fit(X,t)
+		model = Ridge(alpha=1.0)	
+		model.fit(countries[0][4],countries[0][3])
 
-		model.predict(np.array([1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020]).T)
-	
-	
+		year = 1995
 
+		preds = list()
+		years = list()
+
+		for i in range(26):
+			years.append(year)
+			year += 1
+			#preds.append(model.predict([np.array([year,43.97,24,72])]))
+			preds.append(model.predict([np.array([year,43.89,26.90,66.79])]))
+
+
+		preds = np.array(preds)
+		years = np.array(years)
+		cda = countries[0][3]
+
+		plt.scatter(years, cda, color = 'g')
+		plt.plot(years, preds, label="preds")
+		plt.xlabel('Years')
+		plt.ylabel('cda')
+		plt.show()
+		print(model.coef_)
+		print(model.intercept_)
