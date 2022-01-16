@@ -40,9 +40,9 @@ if __name__ == "__main__":
 	cda_dataset = pd.concat([cda_dataset,tcl_dataset],axis=1)
 	cda_dataset = pd.concat([cda_dataset,wtl_dataset],axis=1)
 
-	# Countries (which correspond to numerical labels) to consider
+	# Countries to consider
 
-	countries = np.array(['Australia','United States of America','Nigeria','China','India','Brazil','United Kingdom'])
+	countries = np.array(['Australia','United States of America','Nigeria','China','India','Brazil','United Kingdom','Zambia'])
 
 	country_rows = list()
 
@@ -53,7 +53,76 @@ if __name__ == "__main__":
 		if row[2] in countries:
 			country_rows.append(row)
 
+	country_rows = np.array(country_rows)
+
+	# 3 values at first then cda for 25, grl for 25, tcl for 25, wtl for 25
 	
+	countries = list()
+	country = list()
+
+	for entry in country_rows:
+
+		t = list()
+		X = list()
+		col = list()
+		col_count = 0
+
+		feature = 1
+		
+		for i in range(len(cda_dataset.columns)):
+
+			if i < 29 and i >= 3:
+				t.append(entry[i])
+				if i == 28 and verbose:
+					print("added t")
+
+			if i >= 29:
+				col.append(entry[i])
+				col_count += 1
+
+			if(col_count == 26):
+				if verbose:
+					msg = "added x" + str(feature)
+					print(msg)
+					feature += 1
+
+				X.append(np.array(col))
+				col.clear()
+				col_count = 0
+		
+		if verbose:
+			print("")
+
+		t = np.array(t)
+		X = np.array(X,dtype=object)
+
+		country.append(entry[0]) # code
+		country.append(entry[1]) # iso
+		country.append(entry[2]) # country
+		country.append(t) # target vector
+		country.append(X) # train matrix
+
+		countries.append(np.array(country,dtype=object))
+
+		country.clear()
+	
+	countries = np.array(countries)
+	
+	# indexing works as follows
+	# countries[0] gives the first country from our list of selected countries in alphabetical order 
+	# e.g. if our list contains Australia, Brazil, and Columbia, countries[0] would give Australia
+	# countries[0][1] gives the iso for the first country and countries[0][2] gives the country name
+	# for the above example [0][1] would give AUS and [0][2] would give Austrialia
+	# countries[0][3] gives the target vector, t, in the form of an np array (this array should be a column)
+	# countries[0][4] gives the train martix, X, in the form of an np array of np arrays (each array is a column)
+	# including a demo below
+
+	print(countries[0][1])
+	print("t:",countries[0][3])
+	print("len(t):",len(countries[0][3]))
+	print("len(x1):",len(countries[0][4][0]))
+	print("len(x2):",len(countries[0][4][1]))
+	print("len(x3):",len(countries[0][4][2]))
 
 	if(mode == 1):
 
