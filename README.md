@@ -5,12 +5,12 @@
 Please see main.pdf.
 
 # Countries Examined
-Countries: Australia, United States, Nigeria, China, India, Brazil, United Kingdom
+Countries: Australia, United States, Nigeria, China, India, Brazil, United Kingdom, Zambia
 
 # References
 Wendling, Z. A., Emerson, J. W., de Sherbinin, A., Esty, D. C., et al. (2020). 2020
 Environmental Performance Index. New Haven, CT: Yale Center for Environmental
 Law & Policy. https://epi.yale.edu/ 
 
-Mark Girolami and Simon Rogers, [First Couse in Machine Learning - second edition](http://www.dcs.gla.ac.uk/~srogers/firstcourseml/), 2011. (pp.
+Aurélien Géron, [Hands on Machine Learning with Scikit-Learn Keras & TensorFlow](https://www.oreilly.com/library/view/hands-on-machine-learning/9781492032632/), 2019. (pp. 137-139)
 
