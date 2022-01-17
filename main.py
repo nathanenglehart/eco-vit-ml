@@ -3,9 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import Ridge
-
-#from sklearn.linear_model import Ridge
+from sklearn.linear_model import Lasso
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
@@ -67,37 +65,41 @@ if __name__ == "__main__":
 
 	for entry in country_rows:
 
-		t = []
-		#X = [[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]]
-		X = [[1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020]]
-		col = []
+	
+		t = list()
+		X = [np.array([1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020])]
+		col = list()
 		col_count = 0
 
 		feature = 2
 
+		if verbose:
+			print(entry[1])
+
 		for i in range(len(cda_dataset.columns)):
 
-			if i < 29 and i >= 3:
+			if(i < 29 and i >= 3):
 				t.append(entry[i])
-				if i == 28 and verbose:
+				if(i == 28 and verbose):
 					print("added t")
 					print("added x1")
 
-			if i >= 29:
+			if(i >= 29):
 				col.append(entry[i])
 				col_count += 1
 
 			if(col_count == 26):
-				if verbose:
+				if(verbose):
 					msg = "added x" + str(feature)
 					print(msg)
 					feature += 1
 
-				X.append(np.array(col))
+				#X.append(np.array(col))
+				X.append(np.array(col)/np.linalg.norm(np.array(col)))
 				col.clear()
 				col_count = 0
 
-		if verbose:
+		if(verbose):
 			print("")
 
 		t = np.array(t)
@@ -123,32 +125,23 @@ if __name__ == "__main__":
 	# countries[0][4] gives the train martix, X, in the form of an np array of np arrays (each array is a column)
 	# including a demo below
 
-	print(countries[0][1]) # country iso
-	print("len(t):",len(countries[0][3])) # target vector i.e. cda
-	print("len(X):",np.size(countries[0][4],1)) # number of features
-	print("len(x1):",len(countries[0][4][:,0])) # year
-	print("len(x2):",len(countries[0][4][:,1])) # grl (grassland)
-	print("len(x3):",len(countries[0][4][:,2])) # tcl (tree cover)
-	print("len(x4):",len(countries[0][4][:,3])) # wtl (wetland)
-
-	print(countries[0][4])
+	#if verbose:
+	#	print("demo:",countries[0][1]) # country iso
+	#	print("len(t):",len(countries[0][3])) # target vector i.e. cda
+	#	print("len(X):",np.size(countries[0][4],1)) # number of features
+	#	print("len(x1):",len(countries[0][4][:,0])) # year
+	#	print("len(x2):",len(countries[0][4][:,1])) # grl (grassland)
+	#	print("len(x3):",len(countries[0][4][:,2])) # tcl (tree cover)
+	#	print("len(x4):",len(countries[0][4][:,3])) # wtl (wetland)
 
 	if(mode == 1):
 
 		if(verbose):
-			print("mode 1: ridge regression")
+			print("mode 1: lasso regression")
 
 		degree = 4
-		model=make_pipeline(PolynomialFeatures(degree),Ridge())
+		model=make_pipeline(PolynomialFeatures(degree),Lasso(alpha=1.0,max_iter=10000))
 		model.fit(countries[0][4],countries[0][3])
-
-		
-
-		#1995, 43.09, 26.9, 53.77
-
-		model = Ridge(alpha=1.0)	
-		model.fit(countries[0][4],countries[0][3])
-		print(model.predict([np.array([1995,43.09,26.9,53.77])]))
 
 		year = 1995
 
@@ -159,12 +152,7 @@ if __name__ == "__main__":
 			years.append(year)
 			year_idx = year - 1995
 			year += 1
-			#print(year_idx)
-			#print(country[0][4])
 			preds.append(model.predict([countries[0][4][year_idx]]))
-
-#			preds.append(model.predict([np.array([year,43.89,26.90,66.79])]))
-
 
 		preds = np.array(preds)
 		years = np.array(years)
@@ -175,3 +163,8 @@ if __name__ == "__main__":
 		plt.xlabel('Years')
 		plt.ylabel('cda')
 		plt.show()
+
+	if(mode == 2):
+		
+		if(verbose):
+			print("mode 2: neural networks")
