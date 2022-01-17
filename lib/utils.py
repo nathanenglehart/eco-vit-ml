@@ -7,9 +7,10 @@ def load_dataset():
 
 		Args:
 
-			NA
-
 	"""
+
+	lcb_dataset = pd.read_csv("data/LCB_ind_na.csv")
+	lcb_dataset.columns = ['code','iso','country','LCB.ind.1995','LCB.ind.1996','LCB.ind.1997','LCB.ind.1998','LCB.ind.1999','LCB.ind.2000','LCB.ind.2001','LCB.ind.2002','LCB.ind.2003','LCB.ind.2004','LCB.ind.2005','LCB.ind.2006','LCB.ind.2007','LCB.ind.2008','LCB.ind.2009','LCB.ind.2010','LCB.ind.2011','LCB.ind.2012','LCB.ind.2013','LCB.ind.2014','LCB.ind.2015','LCB.ind.2016','LCB.ind.2017','LCB.ind.2018','LCB.ind.2019','LCB.ind.2020']
 
 	cda_dataset = pd.read_csv("data/CDA_ind_na.csv")
 	cda_dataset.columns = ['code','iso','country','CDA.ind.1995','CDA.ind.1996','CDA.ind.1997','CDA.ind.1998','CDA.ind.1999','CDA.ind.2000','CDA.ind.2001','CDA.ind.2002','CDA.ind.2003','CDA.ind.2004','CDA.ind.2005','CDA.ind.2006','CDA.ind.2007','CDA.ind.2008','CDA.ind.2009','CDA.ind.2010','CDA.ind.2011','CDA.ind.2012','CDA.ind.2013','CDA.ind.2014','CDA.ind.2015','CDA.ind.2016','CDA.ind.2017','CDA.ind.2018','CDA.ind.2019','CDA.ind.2020']
@@ -23,25 +24,29 @@ def load_dataset():
 	wtl_dataset = pd.read_csv("data/WTL_ind_na.csv")
 	wtl_dataset.columns = ['code','iso','country','WTL.ind.1995','WTL.ind.1996','WTL.ind.1997','WTL.ind.1998','WTL.ind.1999','WTL.ind.2000','WTL.ind.2001','WTL.ind.2002','WTL.ind.2003','WTL.ind.2004','WTL.ind.2005','WTL.ind.2006','WTL.ind.2007','WTL.ind.2008','WTL.ind.2009','WTL.ind.2010','WTL.ind.2011','WTL.ind.2012','WTL.ind.2013','WTL.ind.2014','WTL.ind.2015','WTL.ind.2016','WTL.ind.2017','WTL.ind.2018','WTL.ind.2019','WTL.ind.2020']
 
+	del cda_dataset['code']
 	del grl_dataset['code']
 	del tcl_dataset['code']
 	del wtl_dataset['code']
 
+	del cda_dataset['iso']
 	del grl_dataset['iso']
 	del tcl_dataset['iso']
 	del wtl_dataset['iso']
 
+	del cda_dataset['country']
 	del grl_dataset['country']
 	del tcl_dataset['country']
 	del wtl_dataset['country']
 
-	cda_dataset = pd.concat([cda_dataset,grl_dataset],axis=1)
-	cda_dataset = pd.concat([cda_dataset,tcl_dataset],axis=1)
-	cda_dataset = pd.concat([cda_dataset,wtl_dataset],axis=1)
+	lcb_dataset = pd.concat([lcb_dataset,cda_dataset],axis=1)
+	lcb_dataset = pd.concat([lcb_dataset,grl_dataset],axis=1)
+	lcb_dataset = pd.concat([lcb_dataset,tcl_dataset],axis=1)
+	lcb_dataset = pd.concat([lcb_dataset,wtl_dataset],axis=1)
 
-	return cda_dataset
+	return lcb_dataset
 
-def build_dataset(dataset,verbose):
+def build_dataset(dataset,countries,verbose):
 	
 	""" Returns multidimensional numpy array for quick searching given input dataset.
 
@@ -49,15 +54,16 @@ def build_dataset(dataset,verbose):
 
 			dataset::[Pandas Dataframe]
 				Dataset with which to create numpy array
+
+			countries::[Numpy array]
+				Array of the names of countries (string format) to load from datasets
 			
 			verbose::[Boolean]
 				Determines whether to run algorithms with verbose output
 
 	"""
 
-	# countries to consider
-
-	countries = np.array(['Australia','United States of America','Nigeria','China','India','Brazil','United Kingdom','Zambia'])
+	
 
 	country_rows = list()
 
@@ -70,7 +76,7 @@ def build_dataset(dataset,verbose):
 
 	country_rows = np.array(country_rows)
 
-	# 3 values at first then cda for 25, grl for 25, tcl for 25, wtl for 25
+	# 3 values at first then lcb for 25, cda for 25, grl for 25, tcl for 25, wtl for 25
 
 	countries = list()
 	country = list()

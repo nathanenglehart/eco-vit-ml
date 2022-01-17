@@ -1,10 +1,13 @@
 import numpy as np
 import pandas as pd
+import warnings
 
 from matplotlib import pyplot as plt
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import Lasso
+from sklearn.neural_network import MLPClassifier
+
 from lib.utils import build_dataset
 from lib.utils import load_dataset
 from lib.kfcv import lasso_kfcv
@@ -30,8 +33,9 @@ def lasso_regression(countries,lam,degree,country_idx):
 				Index of country for which we want to compute a regression for
 			
 	"""
-
-	model=make_pipeline(PolynomialFeatures(degree),Lasso(alpha=lam,max_iter=10000))
+	
+	warnings.filterwarnings('ignore')
+	model=make_pipeline(PolynomialFeatures(degree),Lasso(alpha=lam,max_iter=10000, tol=1e-2))
 	model.fit(countries[country_idx][4],countries[country_idx][3]) # X, t
 
 	year = 1995
@@ -50,7 +54,7 @@ def lasso_regression(countries,lam,degree,country_idx):
 
 	return years, preds
 
-def grid_search(cv,lams,degrees,countries,country_idx,verbose):
+def grid_search(cv,lams,degrees,countries,country_idx,seed,k,verbose):
 
 	""" Calculates and returns the optimal D and lambda parameters after running grid search on given model.
 
@@ -71,18 +75,23 @@ def grid_search(cv,lams,degrees,countries,country_idx,verbose):
 			country_idx::[Integer]
 				Index of country to run regression on
 
+			seed::[Integer]
+				Seed for random number generation used in cross validation algorithm
+
+			k::[Integer]
+				Number of folds to split data into when running cross validation
+
 			verbose::[Boolean]
 				Indicates whether to display verbose output
 
 	"""
 
-	k = 10
-	seed = 40	
-
 	min_mse = lasso_kfcv(lasso_regression,countries,country_idx,k,seed,lams[0],1,verbose)
 	pair = 1, lams[0]
 
-	# Determine optimal D parameter
+	# find every combination of lambda and D from our given lists
+	# if the average mse of a calculation is lower than our default, set it as our global min value
+	# return optimal pair which minimizes mse
 
 	for lam in lams:
 
@@ -96,7 +105,7 @@ def grid_search(cv,lams,degrees,countries,country_idx,verbose):
 	return pair
 
 
-def driver(verbose,mode):
+def driver(verbose,mode,country_names,country_indicies,seed,k):
 
 	""" Drives each machine learning method we use based on parameter inputs.
 
@@ -108,12 +117,24 @@ def driver(verbose,mode):
 			mode::[Integer]
 				Determines which method to use i.e. 1 for lasso regression, 2 for neural networks
 
+			country_names::[Numpy array]
+				Array of country names (strings) for which to load
+
+			country_indicies::[Numpy array]
+				Array of indicies of countries for which to run driver on
+
+			seed::[Integer]
+				Seed for random number generation used in cross validation
+
+			k::[Integer]
+				Number of folds to split the data into
+
 	"""	
 
 	# Create single dataset
 
 	dataset = load_dataset()
-	countries = build_dataset(dataset,verbose)
+	countries = build_dataset(dataset,country_names,verbose)
 	
 	# indexing works as follows
 	# countries[0] gives the first country from our list of selected countries in alphabetical order
@@ -136,41 +157,59 @@ def driver(verbose,mode):
 	if(mode == 1):
 
 		if(verbose):
-			print("mode 1: lasso regression")
+			print("mode 1: lasso regression\n")
 
 		lams = [0.001,0.01,0.1,1.0,10.0]
 		degrees = [1,2,3,4,5,6,7]
-		country_idx = 0 # Australia
 
-		optimal_polynomial_order, optimal_weight_value = grid_search(lasso_kfcv,lams,degrees,countries,country_idx,verbose)
-		D = optimal_polynomial_order
-		lam = optimal_weight_value
+		for country_idx in country_indicies:
+		
+			# for each country under consideration
+			# run grid search to determine optimal lambda and D values
+			# display optimal values to user
+			# then use findings in lasso regression and plot
 
-		print("optimal D:",D)
-		print("optimal lambda:",lam)
+			optimal_polynomial_order, optimal_weight_value = grid_search(lasso_kfcv,lams,degrees,countries,country_idx,seed,k,verbose)
+			D = optimal_polynomial_order
+			lam = optimal_weight_value
+			
+			print(country_names[country_idx])
+			print("optimal D:",D)
+			print("optimal lambda:",lam,"\n")
 
-		years, preds = lasso_regression(countries,lam,D,country_idx)
-		plt.scatter(years, countries[0][3], color = 'g')
-		plt.plot(years, preds, label="preds")
-		plt.xlabel('Years')
-		plt.ylabel('cda')
-		plt.show()
+			years, preds = lasso_regression(countries,lam,D,country_idx)
+			plt.scatter(years, countries[country_idx][3], color = 'g')
+			plt.plot(years, preds, label="preds")
+			plt.title(country_names[country_idx])
+			plt.xlabel('Years')
+			plt.ylabel('LCB')
+			plt.show()
 
 	if(mode == 2):
 		
 		if(verbose):
-			print("mode 2: neural networks")
+			print("mode 2: neural networks\n")
+
+
 
 if __name__ == "__main__":
 	
-	# program settings
-
+	# verbose option indicates whether to run the program with verbose
+	# mode indicates which method to run the program with 
+	# i.e. 1 -> lasso regression, 2 -> neural networks 
+	# countries corresponds to each individual country to consider with our algorithms
+	# seed is used in random number generation and should be set to make results reproducable
+	# k is the number of folds to use when cross validating our algorithm to find 
+	# optimal parameters 
+	
 	verbose = True
-	mode = 1
+	mode = 1 	
+	countries = np.array(['Nigeria','Zambia'])
+	country_indicies = np.array([0])
+	seed = 40
+	k = 10
 
-	# run program
-
-	driver(verbose,mode)
+	driver(verbose,mode,countries,country_indicies,seed,k)
 
 
 	
