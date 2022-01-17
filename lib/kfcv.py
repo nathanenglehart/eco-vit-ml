@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import sys
 
-def mean_squared_errors(t,t_hat):
+def mean_squared_error(t,t_hat):
     
     """ Returns the mean squared error between each entry in target vector and predicted target vector.
 
@@ -15,16 +15,6 @@ def mean_squared_errors(t,t_hat):
     """
 
     return np.square(t-t_hat).mean()
-
-def split_given_size(a, size):
-    return np.split(a, np.arange(size,len(a),size))
-
-def delete_given_size(a, size):
-	ret = list()
-	for i in range(len(a)):
-		if(len(a[i]) == size):
-			ret.append(a[i])
-	return np.array(ret)	
 
 def split_by_year(t,X,k,seed):
 	
@@ -46,18 +36,29 @@ def split_by_year(t,X,k,seed):
 	
 	"""
 
-	col_size = len(t) // k
-	print(col_size)
+	full = np.column_stack((t,X))
+	np.random.shuffle(full)
+	n = (len(full) - (k * (len(full) // k)))
+	a = np.split(full[:-n,:],k)
+	
+	t_vecs = list()
+	X_matricies = list()
 
-	x = delete_given_size(split_given_size(t,col_size),col_size)
-	
-	
+	for i in a:
 
-	print(x)
+		t_entry = list()
+		X_entry = list()
 
+		for j in i:
+			t_entry.append(j[0])
+			X_entry.append(j[1:])
+			
+		t_vecs.append(t_entry)
+		X_matricies.append(X_entry)
 	
+	return t_vecs, X_matricies
 	
-def lasso_kfcv(dataset,k,seed,weight_penalty,degree,verbose):
+def lasso_kfcv(func,countries,country_idx,k,seed,weight_penalty,degree,verbose):
 
 	""" Returns array of error statistics from run of k fold cross validation for Lasso Regression. 
 		
@@ -85,45 +86,24 @@ def lasso_kfcv(dataset,k,seed,weight_penalty,degree,verbose):
 
 	mse_error = 0
 
-	folds = split(dataset,k,seed)
+	t_vecs, X_matricies = split_by_year(countries[country_idx][3],countries[country_idx][4],k,seed) 
 
 	for i in range(k):
 		
-
-		#lasso_regression(countries,theta,degree,country_idx)
-
 		# set validation and train sets
 
-		validation = folds[i-1]
-		train = pd.DataFrame()
+		validation = t_vecs[i-1], X_matricies[i-1] # folds[i-1]
+		train = list(), list() 
 
-		for j in range(len(folds)+1):
-            		if(j-1 != i-1):
-                		train = pd.concat([folds[j-1],train])
-		
-		countries = build_dataset(train,verbose)
+		for j in range(k+1):
+			if(j-1 != i-1):
+				train[0].append(t_vecs[j-1])
+				train[1].append(X_matricies[j-1])
 
-		# use probabilities to make predictions
+		year, preds = func(countries,weight_penalty,degree,country_idx)
 
-		classifications = list()
-		num_labels = 0
+		cda = countries[country_idx][3]
 
-		for i in probabilities:
-			num_labels += 1
-			classifications.append(np.argmax(i))
-		
-		classifications = np.array(classifications)
-		
-		ground_truth_classifications = list()
+		mse_error += mean_squared_error(cda,preds)
 
-		first_row = validation.iloc[:,0].values
-
-		for i in first_row:
-			ground_truth_classifications.append(int(i))
-
-		print("ground truth:",ground_truth_classifications,"pred:",classifications)
-
-		error = misclassification_rate(classifications,ground_truth_classifications,num_labels)
-		total_error += error
-
-	return total_error/k
+	return mse_error/k
