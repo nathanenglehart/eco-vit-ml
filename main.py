@@ -7,6 +7,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import Lasso
 from lib.utils import build_dataset
 from lib.utils import load_dataset
+from lib.kfcv import split_by_year
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
@@ -93,12 +94,16 @@ def driver(verbose,mode):
 
 		cda = countries[0][3]
 		years, preds = lasso_regression(countries,1,4,0) # theta = 1, degree = 4, country = 0 (Australia)
-
+		
+		
+		split_by_year(countries[0][3],countries[0][4],10,40) #split_by_year(row,years,k,seed)
+		
+		
 		plt.scatter(years, cda, color = 'g')
 		plt.plot(years, preds, label="preds")
 		plt.xlabel('Years')
 		plt.ylabel('cda')
-		plt.show()
+		#plt.show()
 
 	if(mode == 2):
 		
@@ -116,3 +121,5 @@ if __name__ == "__main__":
 
 	driver(verbose,mode)
 
+
+	

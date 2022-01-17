@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import sys
 
 def mean_squared_errors(t,t_hat):
     
@@ -15,27 +16,47 @@ def mean_squared_errors(t,t_hat):
 
     return np.square(t-t_hat).mean()
 
-def split(dataset,k,seed):
+def split_given_size(a, size):
+    return np.split(a, np.arange(size,len(a),size))
+
+def delete_given_size(a, size):
+	ret = list()
+	for i in range(len(a)):
+		if(len(a[i]) == size):
+			ret.append(a[i])
+	return np.array(ret)	
+
+def split_by_year(t,X,k,seed):
 	
-	""" Returns an array of shuffled dataframe folds, split from input dataset.
+	""" Returns numpy array holding train and validation X matricies and t vectors
 		
 		Args:
-			dataset::[Pandas Dataframe]
-				Dataset to split into k folds
+			
+			t::[Numpy Array]
+				Target vector to split into k individual vectors
+
+			X::[Numpy Array]
+				Train matrix to split into k individual matricies
 
 			k::[Integer]
-				Number of folds to split dataset into
+				Number of folds to split data into (<= years)
 
-			seed:[Integer]
-				Seed to be used for random state generation
-			
+			seed::[Integer]
+				Seed for random state generation
+	
 	"""
 
-	shuffle = dataset.sample(frac=1, random_state=np.random.randint(seed))
-	result = np.array_split(shuffle,k)
+	col_size = len(t) // k
+	print(col_size)
 
-	return result
+	x = delete_given_size(split_given_size(t,col_size),col_size)
+	
+	
 
+	print(x)
+
+	
+	
 def lasso_kfcv(dataset,k,seed,weight_penalty,degree,verbose):
 
 	""" Returns array of error statistics from run of k fold cross validation for Lasso Regression. 
