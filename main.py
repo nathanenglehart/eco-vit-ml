@@ -7,11 +7,11 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import Lasso
 from lib.utils import build_dataset
 from lib.utils import load_dataset
-from lib.kfcv import split_by_year
+from lib.kfcv import lasso_kfcv
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
-def lasso_regression(countries,theta,degree,country_idx):
+def lasso_regression(countries,lam,degree,country_idx):
 	
 	""" Runs lasso regression with the given parameters and returns predictions corresponding to years.
 
@@ -20,7 +20,7 @@ def lasso_regression(countries,theta,degree,country_idx):
 			countries::[Numpy Array]	
 				Numpy array containing iso, code, name, t, and X info for each selected country
 
-			theta::[Float]
+			lam::[Float]
 				Weight penalty for high polynomial degrees
 
 			degree::[Integer]
@@ -31,7 +31,7 @@ def lasso_regression(countries,theta,degree,country_idx):
 			
 	"""
 
-	model=make_pipeline(PolynomialFeatures(degree),Lasso(alpha=theta,max_iter=10000))
+	model=make_pipeline(PolynomialFeatures(degree),Lasso(alpha=lam,max_iter=10000))
 	model.fit(countries[country_idx][4],countries[country_idx][3]) # X, t
 
 	year = 1995
@@ -49,7 +49,53 @@ def lasso_regression(countries,theta,degree,country_idx):
 	years = np.array(years)
 
 	return years, preds
+
+def grid_search(cv,lams,degrees,countries,country_idx,verbose):
+
+	""" Calculates and returns the optimal D and lambda parameters after running grid search on given model.
+
+		Args:
+			
+			cv::[Function]
+				Cross validation function
+
+			lams::[List]
+				List of lambda values to test
+
+			degrees::[List]
+				List of polynomial degrees to test
+				
+			countries::[Numpy Array]
+				Mutlidimensional numpy array to plug into regression algorithm
+		
+			country_idx::[Integer]
+				Index of country to run regression on
+
+			verbose::[Boolean]
+				Indicates whether to display verbose output
+
+	"""
+
+	k = 10
+	seed = 40	
+
+	min_mse = lasso_kfcv(lasso_regression,countries,country_idx,k,seed,lams[0],1,verbose)
+	pair = 1, lams[0]
+
+	# Determine optimal D parameter
+
+	for lam in lams:
+
+		for degree in degrees:
+			
+			average_mse = cv(lasso_regression,countries,country_idx,k,seed,lam,degree,verbose)
+			
+			if(average_mse < min_mse):
+				pair = degree, lam
 	
+	return pair
+
+
 def driver(verbose,mode):
 
 	""" Drives each machine learning method we use based on parameter inputs.
@@ -92,18 +138,23 @@ def driver(verbose,mode):
 		if(verbose):
 			print("mode 1: lasso regression")
 
-		cda = countries[0][3]
-		years, preds = lasso_regression(countries,1,4,0) # theta = 1, degree = 4, country = 0 (Australia)
-		
-		
-		split_by_year(countries[0][3],countries[0][4],10,40) #split_by_year(row,years,k,seed)
-		
-		
-		plt.scatter(years, cda, color = 'g')
+		lams = [0.001,0.01,0.1,1.0,10.0]
+		degrees = [1,2,3,4,5,6,7]
+		country_idx = 0 # Australia
+
+		optimal_polynomial_order, optimal_weight_value = grid_search(lasso_kfcv,lams,degrees,countries,country_idx,verbose)
+		D = optimal_polynomial_order
+		lam = optimal_weight_value
+
+		print("optimal D:",D)
+		print("optimal lambda:",lam)
+
+		years, preds = lasso_regression(countries,lam,D,country_idx)
+		plt.scatter(years, countries[0][3], color = 'g')
 		plt.plot(years, preds, label="preds")
 		plt.xlabel('Years')
 		plt.ylabel('cda')
-		#plt.show()
+		plt.show()
 
 	if(mode == 2):
 		
