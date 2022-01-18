@@ -1,11 +1,9 @@
-# Modeling CO2 Growth Rate with Ecosystem Vitality Indicators using Lasso Regression, Kernel Methods, and Neural Networks
-### Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
+# Modeling Global CO2 Growth Rate with Land Loss Indicators using Lasso Polynomial Regression, Ridge Polynomial Regression, and Recurrent Neural Networks
+### Ishaq Kothari, Nathan Englehart, Raul Segredo (Autumn 2021)
 
 # Paper
 Please see main.pdf.
 
-# Countries Examined
-Countries: Australia, United States, Nigeria, China, India, Brazil, United Kingdom, Zambia
 
 # References
 Dr. Pieter Tans, NOAA/GML (gml.noaa.gov/ccgg/trends/) and Dr. Ralph Keeling, Scripps Institution of Oceanography (scrippsco2.ucsd.edu/).
