@@ -22,6 +22,9 @@ def lasso_regression(data,lam,degree):
 
 			degree::[Integer]
 				Polynomial degree to use with lasso regression
+			
+			print_coef::[Boolean]
+				Whether or not to print the model's coefficients
 
 	"""
 
@@ -40,7 +43,7 @@ def lasso_regression(data,lam,degree):
 
 	return data[4][:,0], np.array(model.predict(X)) # years, predictionss 
 
-def ridge_regression(data,lam,degree):
+def ridge_regression(data,lam,degree,print_coef=False):
 	
 	""" Runs ridge regression with the given parameters and returns predictions corresponding to years.
 
@@ -54,6 +57,9 @@ def ridge_regression(data,lam,degree):
 
 			degree::[Integer]
 				Polynomial degree to use with ridge regression
+
+			print_coef::[Boolean]
+				Whether or not to print the model's coefficients (default is to not)
 		
 	"""
 	
@@ -67,8 +73,11 @@ def ridge_regression(data,lam,degree):
 
 	## run ridge regression
 
-	model = Ridge(alpha=lam, max_iter=10000000000, solver='lsqr')
+	model = Ridge(alpha=lam, max_iter=10000000000, solver='svd')
 	model.fit(X, data[3])
+	
+	if(print_coef):
+		print(model.coef_)
 
 	return data[4][:,0], np.array(model.predict(X)) # years, predictionss 
 

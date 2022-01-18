@@ -62,7 +62,7 @@ def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
 			average_mse = cv(reg,data,k,seed,lam,degree,verbose)
 
-			if(average_mse < min_mse):
+			if(average_mse <= min_mse):
 				pair = degree, lam
 
 	return pair
@@ -141,7 +141,7 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
-		plot_reg(data,lasso_regression,lam,D)
+		plot_reg(data,lasso_regression,lam,D,False)
 
 	if(mode == 2):
 
@@ -169,7 +169,7 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
-		plot_reg(data,ridge_regression,lam,D)	
+		plot_reg(data,ridge_regression,lam,D,False)	
 
 
 if __name__ == "__main__":

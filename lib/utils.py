@@ -212,7 +212,7 @@ def X_build(data,degree):
 
 	return X
 
-def plot_reg(data,reg,lam,D):
+def plot_reg(data,reg,lam,D,print_coef):
 	
 	""" Runs regression on data with given lambda and D parameters and shows graph output with matplotlib.
 
@@ -232,7 +232,7 @@ def plot_reg(data,reg,lam,D):
 
 	"""
 
-	years, preds = reg(data,lam,D)
+	years, preds = reg(data,lam,D,print_coef)
 	plt.scatter(years, data[3], color = 'g')
 	plt.plot(years, preds, label="preds")
 	plt.xlabel('Years')

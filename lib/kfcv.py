@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import sys
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
