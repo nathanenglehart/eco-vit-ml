@@ -5,16 +5,20 @@ from matplotlib import pyplot as plt
 
 from sklearn.neural_network import MLPClassifier
 
-from lib.reg import lasso_regression
 from lib.utils import build_world
 from lib.utils import build_dataset
 from lib.utils import load_dataset
+
 from lib.kfcv import lasso_kfcv
+from lib.reg import lasso_regression
+
+from lib.kfcv import ridge_kfcv
+from lib.reg import ridge_regression
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
 
-def grid_search(cv,lams,degrees,data,seed,k,verbose):
+def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
 	""" Calculates and returns the optimal D and lambda parameters after running grid search on given model.
 
@@ -22,7 +26,10 @@ def grid_search(cv,lams,degrees,data,seed,k,verbose):
 
 			cv::[Function]
 				Cross validation function
-
+	
+			reg::[Function]
+				Regression function i.e. lasso or ridge
+	
 			lams::[List]
 				List of lambda values to test
 
@@ -43,7 +50,7 @@ def grid_search(cv,lams,degrees,data,seed,k,verbose):
 
 	"""
 
-	min_mse = cv(lasso_regression,data,k,seed,lams[0],degrees[0],verbose)
+	min_mse = cv(reg,data,k,seed,lams[0],degrees[0],verbose)
 	pair = degrees[0], lams[0]
 
 	# find every combination of lambda and D from our given lists
@@ -54,7 +61,7 @@ def grid_search(cv,lams,degrees,data,seed,k,verbose):
 
 		for degree in degrees:
 
-			average_mse = cv(lasso_regression,data,k,seed,lam,degree,verbose)
+			average_mse = cv(reg,data,k,seed,lam,degree,verbose)
 
 			if(average_mse < min_mse):
 				pair = degree, lam
@@ -87,7 +94,7 @@ def driver(verbose,mode,country_names,country_indicies,seed,k):
 
 	"""
 
-	# Create single dataset
+	# create single dataset
 
 	dataset = load_dataset()
 	countries = build_dataset(dataset,country_names,verbose)
@@ -121,20 +128,10 @@ def driver(verbose,mode,country_names,country_indicies,seed,k):
 		if(verbose):
 			print("mode 1: lasso regression\n")
 
-
-
-		#lam = 1.0
-		#D = 3
-
-		#years, preds = lasso_regression(data,lam,D)
-
-
-
-
 		lams = [0.001,0.01,0.1,1.0,10.0]
 		degrees = [1,2,3,4,5,6,7]
 
-		optimal_polynomial_order, optimal_weight_value = grid_search(lasso_kfcv,lams,degrees,data,seed,k,verbose)
+		optimal_polynomial_order, optimal_weight_value = grid_search(lasso_kfcv,lasso_regression,lams,degrees,data,seed,k,verbose)
 		D = optimal_polynomial_order
 		lam = optimal_weight_value
 			
@@ -153,6 +150,30 @@ def driver(verbose,mode,country_names,country_indicies,seed,k):
 		if(verbose):
 			print("mode 2: neural networks\n")
 
+	if(mode == 3):
+		
+		if(verbose):
+			print("mode 3: ridge regression\n")
+
+		lams = [0.001,0.01,0.1,1.0,10.0]
+		degrees = [1,2,3,4,5,6,7]
+
+		optimal_polynomial_order, optimal_weight_value = grid_search(ridge_kfcv,ridge_regression,lams,degrees,data,seed,k,verbose)
+		D = optimal_polynomial_order
+		lam = optimal_weight_value
+			
+		print("optimal D:",D)
+		print("optimal lambda:",lam,"\n")
+
+		years, preds = ridge_regression(data,lam,D)
+		plt.scatter(years, data[3], color = 'g')
+		plt.plot(years, preds, label="preds")
+		plt.xlabel('Years')
+		plt.ylabel('MLD')
+		plt.show()
+
+
+
 if __name__ == "__main__":
 
 	# verbose option indicates whether to run the program with verbose
@@ -164,8 +185,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 1
-	#countries = np.array(['Nigeria','Zambia'])
+	mode = 3
 	countries = np.array(['Afghanistan','Albania','Algeria','Angola','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei Darussalam','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Costa Rica',"Cote d'Ivoire",'Croatia','Cuba','Cyprus','Czech Republic','Dem. Rep. Congo','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Lithuania','Luxembourg','Macao','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Macedonia','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Republic of Congo','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States of America','Uruguay','Uzbekistan','Vanuatu','Venezuela','Viet Nam','Yemen','Zambia','Zimbabwe'])
 	country_indicies = np.array([0])
 	seed = 40

@@ -111,3 +111,56 @@ def lasso_kfcv(lasso_function,data,k,seed,weight_penalty,degree,verbose):
 		mse_error += mean_squared_error(t,preds)
 
 	return mse_error/k
+
+def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
+
+	""" Returns array of error statistics from run of k fold cross validation for Lasso Regression. 
+		
+		Args:
+			
+			ridge_function::[Function]
+				Ridge regression function
+		
+			data::[Numpy array]
+				Array holding iso, name, code, t vector, and X matrix 
+			
+			k::[Integer]
+				Number of folds to split the dataset into
+
+			seed::[Integer]
+				Seed used to randomly split the given dataset into k folds
+			
+			weight_penalty::[Float]
+				Penalty for high degree polynomials in model
+
+			degree::[Integer]
+				Polynomial degree for model
+			
+			verbose::[Boolean]
+				Option to run program with verbose output
+		
+	"""
+
+	mse_error = 0
+
+	t_vecs, X_matricies = split_by_year(data[3],data[4],k,seed) 
+
+	for i in range(k):
+		
+		# set validation and train sets
+
+		validation = t_vecs[i-1], X_matricies[i-1] # folds[i-1]
+		train = list(), list() 
+
+		for j in range(k+1):
+			if(j-1 != i-1):
+				train[0].append(t_vecs[j-1])
+				train[1].append(X_matricies[j-1])
+
+		year, preds = ridge_function(data,weight_penalty,degree)
+
+		t = data[3]
+
+		mse_error += mean_squared_error(t,preds)
+
+	return mse_error/k

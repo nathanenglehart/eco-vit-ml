@@ -1,10 +1,8 @@
 import numpy as np
 import pandas as pd
-import warnings
 
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import Lasso
+from sklearn.linear_model import Ridge
 
 def X_build(col,D):
     
@@ -95,7 +93,7 @@ def ridge_regression(data,lam,degree):
 
 	## run ridge regression
 
-	model = Ridge(alpha=lam, max_iter=100000000, tol=1e-2)
+	model = Ridge(alpha=1, max_iter=10000000000)
 	model.fit(X, data[3])
 
 	return data[4][:,0], np.array(model.predict(X)) # years, predictionss 
