@@ -122,6 +122,9 @@ def driver(verbose,mode,country_names,seed,k):
 	t, X = build_world(countries)
 	data = np.array(['0','world','WOR',t,X],dtype=object)
 
+	if(verbose)
+		print("sanitized dataset")
+
 	if(mode == 1):
 
 		if(verbose):
@@ -141,7 +144,8 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
-		plot_reg(data,lasso_regression,lam,D,False)
+		plot_reg(data,lasso_regression,lam,D,verbose)
+		print("mse across folds:",lasso_kfcv(lasso_regression,data,k,seed,lam,D,verbose))
 
 	if(mode == 2):
 
@@ -169,7 +173,9 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
-		plot_reg(data,ridge_regression,lam,D,False)	
+		plot_reg(data,ridge_regression,lam,D,verbose)
+		print("mse across folds:",ridge_kfcv(ridge_regression,data,k,seed,lam,D,verbose))
+
 
 
 if __name__ == "__main__":
@@ -183,7 +189,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 3
+	mode = 1
 	countries = all_world_countries() 
 	seed = 40
 	k = 10

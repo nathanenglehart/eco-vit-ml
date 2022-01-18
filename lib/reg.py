@@ -8,7 +8,7 @@ from lib.utils import X_build
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
-def lasso_regression(data,lam,degree):
+def lasso_regression(data,lam,degree,print_coef=False):
 
 	""" Runs lasso regression with the given parameters and returns predictions corresponding to years.
 
@@ -40,7 +40,13 @@ def lasso_regression(data,lam,degree):
 
 	model = Lasso(alpha=lam, max_iter=100000000, tol=1e-2)
 	model.fit(X, data[3])
+	
+	# optional argument
 
+	if(print_coef):
+		print("\nmodel coefficients")
+		print(model.coef_,"\n")
+	
 	return data[4][:,0], np.array(model.predict(X)) # years, predictionss 
 
 def ridge_regression(data,lam,degree,print_coef=False):
@@ -76,8 +82,11 @@ def ridge_regression(data,lam,degree,print_coef=False):
 	model = Ridge(alpha=lam, max_iter=10000000000, solver='svd')
 	model.fit(X, data[3])
 	
+	# optional argument
+
 	if(print_coef):
-		print(model.coef_)
+		print("model coefficients")
+		print(model.coef_,"\n")
 
 	return data[4][:,0], np.array(model.predict(X)) # years, predictionss 
 
