@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import sys
 
+# Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
+
 def mean_squared_error(t,t_hat):
     
     """ Returns the mean squared error between each entry in target vector and predicted target vector.
