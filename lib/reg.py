@@ -4,28 +4,9 @@ import pandas as pd
 from sklearn.linear_model import Lasso
 from sklearn.linear_model import Ridge
 
-def X_build(col,D):
-    
-    """ Takes a single predictor column and a positive integer D, and creates a predictor matrix whose columns consist of powers of the entries in the original column from 0 to D.
+from lib.utils import X_build
 
-		Args:
-		
-			col::[Numpy Array]
-                		Single predictor column
-        
-	    		D::[Integer]
-                		Positive integer
-    
-    """
-
-    predictor_matrix = np.ones((len(col),D+1))
-
-    for i in range(0,len(col)):
-        for j in range(0,D+1):
-            val = col[i]**(j)
-            predictor_matrix[i][j] = val
-
-    return predictor_matrix
+# Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
 def lasso_regression(data,lam,degree):
 
@@ -49,12 +30,8 @@ def lasso_regression(data,lam,degree):
 	# smash matricies together
 	# this is how we use multivariate regression
 
-	X = X_build(data[4][:,0],degree)
-
-	for col in range(data[4].shape[1]-1):
-		X = np.hstack((X,X_build(data[4][:,col+1],degree)
-))
-
+	X = X_build(data,degree)
+	
 	# run lasso regression with the given weight penalty 
 	# then fit model to data and return predictions
 
@@ -86,14 +63,11 @@ def ridge_regression(data,lam,degree):
 	# smash matricies together
 	# this is how we use multivariate regression
 
-	X = X_build(data[4][:,0],degree)
-
-	for col in range(data[4].shape[1]-1):
-		X = np.hstack((X,X_build(data[4][:,col+1],degree)))
+	X = X_build(data,degree)
 
 	## run ridge regression
 
-	model = Ridge(alpha=1, max_iter=10000000000)
+	model = Ridge(alpha=lam, max_iter=10000000000)
 	model.fit(X, data[3])
 
 	return data[4][:,0], np.array(model.predict(X)) # years, predictionss 
