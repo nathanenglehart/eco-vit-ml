@@ -67,7 +67,7 @@ def ridge_regression(data,lam,degree):
 
 	## run ridge regression
 
-	model = Ridge(alpha=lam, max_iter=10000000000)
+	model = Ridge(alpha=lam, max_iter=10000000000, solver='lsqr')
 	model.fit(X, data[3])
 
 	return data[4][:,0], np.array(model.predict(X)) # years, predictionss 
