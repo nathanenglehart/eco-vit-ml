@@ -1,6 +1,10 @@
 import numpy as np
 import pandas as pd
 
+from matplotlib import pyplot as plt
+
+# Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
+
 def load_dataset():
 	
 	""" Loads datasets relavent to the project.
@@ -164,3 +168,85 @@ def build_world(countries):
 		X = X + countries[i+1][4]
 	
 	return t / (len(countries)), X / (len(countries))
+
+
+def X_build_col(col,D):
+    
+    """ Takes a single predictor column and a positive integer D, and creates a predictor matrix whose columns consist of powers of the entries in the original column from 0 to D.
+
+		Args:
+		
+			col::[Numpy Array]
+                		Single predictor column
+        
+	    		D::[Integer]
+                		Positive integer
+    
+    """
+
+    predictor_matrix = np.ones((len(col),D+1))
+
+    for i in range(0,len(col)):
+        for j in range(0,D+1):
+            val = col[i]**(j)
+            predictor_matrix[i][j] = val
+
+    return predictor_matrix
+
+def X_build(data,degree):
+	
+	""" Takes all columns in matrix, makes them into predictor matricies, and stacks them together horizontally.
+
+		Args:
+
+			data::[Numpy Array]
+				Array that holds iso, name, code, t vector, and X matrix
+
+	"""
+
+	X = X_build_col(data[4][:,0],degree)
+
+	for col in range(data[4].shape[1]-1):
+		X = np.hstack((X,X_build_col(data[4][:,col+1],degree)
+))
+
+	return X
+
+def plot_reg(data,reg,lam,D):
+	
+	""" Runs regression on data with given lambda and D parameters and shows graph output with matplotlib.
+
+		Args:
+
+			data::[Numpy Array]
+				Array that holds iso, name, code, t vector, and X matrix
+			
+			reg::[Function]
+				Regression function i.e. lasso or ridge
+
+			lam::[Float]
+				Optimal lambda parameter (penalty for weights) for regression
+
+			D::[Integer]
+				Optimal D parameter (polynomial order) for regression
+
+	"""
+
+	years, preds = reg(data,lam,D)
+	plt.scatter(years, data[3], color = 'g')
+	plt.plot(years, preds, label="preds")
+	plt.xlabel('Years')
+	plt.ylabel('MLD')
+	plt.show()
+
+def all_world_countries():
+	
+	""" Returns array containing string names for every country in the world.
+	
+		Args:
+
+			NA
+		
+	"""
+
+	return np.array(['Afghanistan','Albania','Algeria','Angola','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei Darussalam','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Costa Rica',"Cote d'Ivoire",'Croatia','Cuba','Cyprus','Czech Republic','Dem. Rep. Congo','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Lithuania','Luxembourg','Macao','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Macedonia','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Republic of Congo','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States of America','Uruguay','Uzbekistan','Vanuatu','Venezuela','Viet Nam','Yemen','Zambia','Zimbabwe'])
