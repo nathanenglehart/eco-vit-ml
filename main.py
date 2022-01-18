@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
 
-from matplotlib import pyplot as plt
-
 from sklearn.neural_network import MLPClassifier
 
+from lib.utils import all_world_countries
+from lib.utils import plot_reg
 from lib.utils import build_world
 from lib.utils import build_dataset
 from lib.utils import load_dataset
@@ -16,7 +16,6 @@ from lib.kfcv import ridge_kfcv
 from lib.reg import ridge_regression
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
-
 
 def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
@@ -68,7 +67,7 @@ def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
 	return pair
 
-def driver(verbose,mode,country_names,country_indicies,seed,k):
+def driver(verbose,mode,country_names,seed,k):
 
 	""" Drives each machine learning method we use based on parameter inputs.
 
@@ -128,22 +127,21 @@ def driver(verbose,mode,country_names,country_indicies,seed,k):
 		if(verbose):
 			print("mode 1: lasso regression\n")
 
+		# run grid search to find the optimal combination of weight penalty (lambda/lam) and polynomial
+		# order (D/degree) for lasso regression; this works by running cv on every combination 
+		# and finding the combination which minimizes average mean squared error betweeen the target and 
+		# predicted vectors; once this is found, run lasso regression with optimal lambda and polynomial 
+		# order to generate predictions for each year and display findings with matplotlib
+
 		lams = [0.001,0.01,0.1,1.0,10.0]
 		degrees = [1,2,3,4,5,6,7]
 
-		optimal_polynomial_order, optimal_weight_value = grid_search(lasso_kfcv,lasso_regression,lams,degrees,data,seed,k,verbose)
-		D = optimal_polynomial_order
-		lam = optimal_weight_value
+		D, lam = grid_search(lasso_kfcv,lasso_regression,lams,degrees,data,seed,k,verbose)
 			
 		print("optimal D:",D)
-		print("optimal lambda:",lam,"\n")
+		print("optimal lambda:",lam)
 
-		years, preds = lasso_regression(data,lam,D)
-		plt.scatter(years, data[3], color = 'g')
-		plt.plot(years, preds, label="preds")
-		plt.xlabel('Years')
-		plt.ylabel('MLD')
-		plt.show()
+		plot_reg(data,lasso_regression,lam,D)
 
 	if(mode == 2):
 
@@ -155,23 +153,23 @@ def driver(verbose,mode,country_names,country_indicies,seed,k):
 		if(verbose):
 			print("mode 3: ridge regression\n")
 
+		# like above, here we do the exact same process, excpet for ridge regression; in other words
+		# run grid search to find the optimal combination of weight penalty (lambda/lam) and polynomial
+		# order (D/degree) for ridge regression (optimal parameters are stored in the variables D and lam) 
+		# this works by running cv on every combination and finding the combination which minimizes average
+		# mean squared error betweeen the target and predicted vectors; once this is found, run ridge 
+		# regression with optimal lambda and polynomial order to generate predictions for each year and 
+		# display findings with matplotlib; this part is run in the plot_reg function
+
 		lams = [0.001,0.01,0.1,1.0,10.0]
 		degrees = [1,2,3,4,5,6,7]
 
-		optimal_polynomial_order, optimal_weight_value = grid_search(ridge_kfcv,ridge_regression,lams,degrees,data,seed,k,verbose)
-		D = optimal_polynomial_order
-		lam = optimal_weight_value
+		D, lam = grid_search(ridge_kfcv,ridge_regression,lams,degrees,data,seed,k,verbose)
 			
 		print("optimal D:",D)
-		print("optimal lambda:",lam,"\n")
+		print("optimal lambda:",lam)
 
-		years, preds = ridge_regression(data,lam,D)
-		plt.scatter(years, data[3], color = 'g')
-		plt.plot(years, preds, label="preds")
-		plt.xlabel('Years')
-		plt.ylabel('MLD')
-		plt.show()
-
+		plot_reg(data,ridge_regression,lam,D)	
 
 
 if __name__ == "__main__":
@@ -185,10 +183,9 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 3
-	countries = np.array(['Afghanistan','Albania','Algeria','Angola','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei Darussalam','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Costa Rica',"Cote d'Ivoire",'Croatia','Cuba','Cyprus','Czech Republic','Dem. Rep. Congo','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Lithuania','Luxembourg','Macao','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Macedonia','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Republic of Congo','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States of America','Uruguay','Uzbekistan','Vanuatu','Venezuela','Viet Nam','Yemen','Zambia','Zimbabwe'])
-	country_indicies = np.array([0])
+	mode = 1
+	countries = all_world_countries() 
 	seed = 40
 	k = 10
 
-	driver(verbose,mode,countries,country_indicies,seed,k)
+	driver(verbose,mode,countries,seed,k)
