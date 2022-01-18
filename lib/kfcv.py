@@ -39,7 +39,6 @@ def split_by_year(t,X,k,seed):
 	full = np.column_stack((t,X))
 	rng = np.random.default_rng(seed)
 	rng.shuffle(full)
-	#np.random.shuffle(full)
 	n = (len(full) - (k * (len(full) // k)))
 	a = np.split(full[:-n,:],k)
 	
@@ -60,7 +59,7 @@ def split_by_year(t,X,k,seed):
 	
 	return t_vecs, X_matricies
 	
-def lasso_kfcv(lasso_function,countries,country_idx,k,seed,weight_penalty,degree,verbose):
+def lasso_kfcv(lasso_function,data,k,seed,weight_penalty,degree,verbose):
 
 	""" Returns array of error statistics from run of k fold cross validation for Lasso Regression. 
 		
@@ -69,12 +68,9 @@ def lasso_kfcv(lasso_function,countries,country_idx,k,seed,weight_penalty,degree
 			lasso_function::[Function]
 				Lasso regression function
 		
-			countries::[Numpy array]
-				Array holding different country's iso, name, code, t vector, and X matrix 
+			data::[Numpy array]
+				Array holding iso, name, code, t vector, and X matrix 
 			
-			country_idx::[Integer]
-				Index of country for which to run cross validation on
-
 			k::[Integer]
 				Number of folds to split the dataset into
 
@@ -94,7 +90,7 @@ def lasso_kfcv(lasso_function,countries,country_idx,k,seed,weight_penalty,degree
 
 	mse_error = 0
 
-	t_vecs, X_matricies = split_by_year(countries[country_idx][3],countries[country_idx][4],k,seed) 
+	t_vecs, X_matricies = split_by_year(data[3],data[4],k,seed) 
 
 	for i in range(k):
 		
@@ -108,10 +104,10 @@ def lasso_kfcv(lasso_function,countries,country_idx,k,seed,weight_penalty,degree
 				train[0].append(t_vecs[j-1])
 				train[1].append(X_matricies[j-1])
 
-		year, preds = lasso_function(countries,weight_penalty,degree,country_idx)
+		year, preds = lasso_function(data,weight_penalty,degree)
 
-		cda = countries[country_idx][3]
+		t = data[3]
 
-		mse_error += mean_squared_error(cda,preds)
+		mse_error += mean_squared_error(t,preds)
 
 	return mse_error/k
