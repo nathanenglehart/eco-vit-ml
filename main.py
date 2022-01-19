@@ -15,6 +15,8 @@ from lib.reg import lasso_regression
 from lib.kfcv import ridge_kfcv
 from lib.reg import ridge_regression
 
+from sklearn.model_selection import cross_validate
+
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
 def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
@@ -64,12 +66,13 @@ def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 		for degree in degrees:
 
 			average_mse = cv(reg,data,k,seed,lam,degree,verbose)
-			
+
 			if(verbose):
 				print("D =",degree,"lam =",lam,"average mse:",average_mse)
 	
-			if(average_mse <= min_mse):
+			if(average_mse < min_mse):
 				pair = degree, lam
+				min_mse = average_mse
 
 	if(verbose):
 		print("")
@@ -132,7 +135,7 @@ def driver(verbose,mode,country_names,seed,k):
 	data = np.array(['0','world','WOR',t,X / X.max(axis=0)],dtype=object)
 
 	lams = [0.001,0.01,0.1,1.0,10.0]
-	degrees = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+	degrees = [1,2,3,4,5,6,7]
 
 	if(verbose):
 		print("sanitized dataset\n")
@@ -196,9 +199,9 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 1
+	mode = 3
 	countries = all_world_countries() 
 	seed = 40
-	k = 10
+	k = 25
 
 	driver(verbose,mode,countries,seed,k)

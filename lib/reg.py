@@ -50,7 +50,8 @@ def lasso_regression(data,to_predict,lam,degree,print_coef=False):
 		print("\nmodel coefficients")
 		print(model.coef_,"\n")
 	
-	return data[4][:,0], np.array(model.predict(X_build(to_predict,degree))) # years, predictionss 
+	#return data[4][:,0], np.array(model.predict(X_build(to_predict,degree))) # years, predictionss
+	return data[4][:,0], np.array(model.predict(np.array(to_predict[4]).reshape(-1,1))) # years, predictionss 
 
 def ridge_regression(data,to_predict,lam,degree,print_coef=False):
 	

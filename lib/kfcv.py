@@ -40,6 +40,7 @@ def split_by_year(t,X,k,seed):
 	full = np.column_stack((t,X))
 	rng = np.random.default_rng(seed)
 	rng.shuffle(full)
+	#np.random.shuffle(full)
 	n = (len(full) - (k * (len(full) // k)))
 	a = np.split(full[:-n,:],k)
 	
@@ -57,6 +58,9 @@ def split_by_year(t,X,k,seed):
 			
 		t_vecs.append(t_entry)
 		X_matricies.append(X_entry)
+	
+	#print("t:",t_vecs)
+	#print("X:",X_matricies)
 	
 	return t_vecs, X_matricies
 	
@@ -155,7 +159,9 @@ def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
 
 	t_vecs, X_matricies = split_by_year(data[3],data[4],k,seed)
 
-	for i in range(k):
+	#print("\nrun\n")
+
+	for i in range(1,k+1):
 		
 		# set validation and train sets
 
@@ -176,10 +182,14 @@ def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
 
 		validation[4] = np.concatenate(np.array(validation[4]))
 		validation[3] = np.concatenate(np.array(validation[3]))
-
+		
+		#print("train:",len(train[4]))
+		#print(train[4])
+		#print("validation:",len(validation[4]))
+		#print(validation[4])
 
 		year, preds = ridge_function(np.array(train,dtype=object),validation,weight_penalty,degree)
 
-		mse_error += mean_squared_error(train[3],preds) # t, t_hat
+		mse_error += mean_squared_error(validation[3],preds) # t, t_hat
 
 	return mse_error/k
