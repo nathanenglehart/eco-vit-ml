@@ -15,6 +15,7 @@ from lib.reg import lasso_regression
 
 from lib.kfcv import ridge_kfcv
 from lib.reg import ridge_regression
+from sklearn import preprocessing as pre
 
 from sklearn.model_selection import cross_validate
 
@@ -22,11 +23,15 @@ from sklearn.model_selection import cross_validate
 
 def neuralnetwork(X,t):
     ### X represents the matrix for the train data and t represents the target data for the train set
-    
-    model = MLPRegressor(max_iter=10000000,random_state=9,solver='lbfgs',activation='logistic')
-    model.fit(X,t)
+    np.random.seed(0)
+    scaler = pre.StandardScaler()
+    X_train_scaled = scaler.fit_transform(X)
+
+
+    model = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50, max_iter=100000, learning_rate='constant',activation="logistic")
+    model.fit(X_train_scaled,t)
     #print("coefs",model.coefs_)
-    return model.predict(X)
+    return model.predict(X_train_scaled)
 
 def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
@@ -36,10 +41,10 @@ def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
 			cv::[Function]
 				Cross validation function
-	
+
 			reg::[Function]
 				Regression function i.e. lasso or ridge
-	
+
 			lams::[List]
 				List of lambda values to test
 
@@ -47,7 +52,7 @@ def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 				List of polynomial degrees to test
 
 			data::[Numpy Array]
-				Array holding iso, name, code, t vector, and X matrix 
+				Array holding iso, name, code, t vector, and X matrix
 
 			seed::[Integer]
 				Seed for random number generation used in cross validation algorithm
@@ -78,7 +83,7 @@ def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
 			if(verbose):
 				print("D =",degree,"lam =",lam,"average mse:",average_mse)
-	
+
 			if(average_mse < min_mse):
 				pair = degree, lam
 				min_mse = average_mse
@@ -137,7 +142,7 @@ def driver(verbose,mode,country_names,seed,k):
 	#	print("len(x3):",len(countries[0][4][:,2])) # tcl (tree cover)
 	#	print("len(x4):",len(countries[0][4][:,3])) # wtl (wetland)
 
-	# for our purposes, we actually want to consolidate all of this data into 
+	# for our purposes, we actually want to consolidate all of this data into
 	# a singular t vector and X matrix for the world
 
 	t, X = build_world(countries)
@@ -155,13 +160,13 @@ def driver(verbose,mode,country_names,seed,k):
 			print("mode 1: lasso regression\n")
 
 		# run grid search to find the optimal combination of weight penalty (lambda/lam) and polynomial
-		# order (D/degree) for lasso regression; this works by running cv on every combination 
-		# and finding the combination which minimizes average mean squared error betweeen the target and 
-		# predicted vectors; once this is found, run lasso regression with optimal lambda and polynomial 
+		# order (D/degree) for lasso regression; this works by running cv on every combination
+		# and finding the combination which minimizes average mean squared error betweeen the target and
+		# predicted vectors; once this is found, run lasso regression with optimal lambda and polynomial
 		# order to generate predictions for each year and display findings with matplotlib
 
 		D, lam = grid_search(lasso_kfcv,lasso_regression,lams,degrees,data,seed,k,verbose)
-			
+
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
@@ -172,32 +177,32 @@ def driver(verbose,mode,country_names,seed,k):
 
 		if(verbose):
 			print("mode 2: neural networks\n")
-		
+
 		preds = neuralnetwork(X,t)
 		plot(data,X[:,0],preds)
 
 
 	if(mode == 3):
-		
+
 		if(verbose):
 			print("mode 3: ridge regression\n")
 
 		# like above, here we do the exact same process, excpet for ridge regression; in other words
 		# run grid search to find the optimal combination of weight penalty (lambda/lam) and polynomial
-		# order (D/degree) for ridge regression (optimal parameters are stored in the variables D and lam) 
+		# order (D/degree) for ridge regression (optimal parameters are stored in the variables D and lam)
 		# this works by running cv on every combination and finding the combination which minimizes average
-		# mean squared error betweeen the target and predicted vectors; once this is found, run ridge 
-		# regression with optimal lambda and polynomial order to generate predictions for each year and 
+		# mean squared error betweeen the target and predicted vectors; once this is found, run ridge
+		# regression with optimal lambda and polynomial order to generate predictions for each year and
 		# display findings with matplotlib; this part is run in the plot_reg function
 
 		D, lam = grid_search(ridge_kfcv,ridge_regression,lams,degrees,data,seed,k,verbose)
-			
+
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
 		plot_reg(data,data,ridge_regression,lam,D,verbose)
 		print("mse across folds:",ridge_kfcv(ridge_regression,data,k,seed,lam,D,verbose))
-		
+
 
 
 
@@ -213,7 +218,7 @@ if __name__ == "__main__":
 
 	verbose = True
 	mode = 2
-	countries = all_world_countries() 
+	countries = all_world_countries()
 	seed = 40
 	k = 5
 
