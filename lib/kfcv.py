@@ -38,9 +38,11 @@ def split_by_year(t,X,k,seed):
 				Seed for random state generation
 
 	"""
-    #scaler = pre.StandardScaler()
-    #X = scaler.fit_transform(X)
-    #comment out code to not standardize
+
+	#scaler = pre.StandardScaler()
+    	#X = scaler.fit_transform(X)
+    	#comment out code to not standardize
+	
 	full = np.column_stack((t,X))
 	rng = np.random.default_rng(seed)
 	rng.shuffle(full)
@@ -213,3 +215,6 @@ def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
 			plt.show()
 
 	return mse_error/k
+
+
+

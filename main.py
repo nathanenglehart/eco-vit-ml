@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from sklearn.neural_network import MLPRegressor
+from sklearn import preprocessing as pre
 
 from lib.utils import plot
 from lib.utils import all_world_countries
@@ -15,8 +16,7 @@ from lib.reg import lasso_regression
 
 from lib.kfcv import ridge_kfcv
 from lib.reg import ridge_regression
-from sklearn import preprocessing as pre
-
+from lib.reg import local_ridge_regression
 
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
@@ -27,8 +27,6 @@ def neuralnetwork(X,t):
     np.random.seed(0)
     scaler = pre.StandardScaler()
     X_train_scaled = scaler.fit_transform(X)
-
-
     model = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50, max_iter=100000, learning_rate='constant',activation="identity")
     model.fit(X_train_scaled,t)
     print("coefs",model.coefs_)
@@ -204,21 +202,38 @@ def driver(verbose,mode,country_names,seed,k):
 		plot_reg(data,data,ridge_regression,lam,D,verbose)
 		print("mse across folds:",ridge_kfcv(ridge_regression,data,k,seed,lam,D,verbose))
 
+	if(mode == 4):
+		
+		if(verbose):
+			print("mode 4: local ridge regression\n")
 
+		# same as ridge regression except that we use a locally coded function instead of sklearn
+		# ridge_regression(data,to_predict,lam,degree,print_coef=False)
 
+		#scaler = pre.StandardScaler()
+		#data[4] = scaler.fit_transform(data[4])
+
+		D, lam = grid_search(ridge_kfcv,local_ridge_regression,lams,degrees,data,seed,k,verbose)
+
+		print("optimal D:",D)
+		print("optimal lambda:",lam)
+		
+
+		plot_reg(data,data,local_ridge_regression,lam,D,verbose)
+		print("mse across folds:",ridge_kfcv(local_ridge_regression,data,k,seed,lam,D,verbose))
 
 if __name__ == "__main__":
 
 	# verbose option indicates whether to run the program with verbose
 	# mode indicates which method to run the program with
-	# i.e. 1 -> lasso regression, 2 -> neural networks
+	# i.e. 1 -> lasso regression, 2 -> neural networks, 3 -> ridge regression, 4 -> local ridge regression
 	# countries corresponds to each individual country to consider with our algorithms
 	# seed is used in random number generation and should be set to make results reproducable
 	# k is the number of folds to use when cross validating our algorithm to find
 	# optimal parameters
 
 	verbose = True
-	mode = 2
+	mode = 4
 	countries = all_world_countries()
 	seed = 40
 	k = 5

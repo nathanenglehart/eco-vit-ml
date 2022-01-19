@@ -207,9 +207,10 @@ def X_build(data,degree):
 	"""
 
 	X = X_build_col(data[4][:,0],degree)
+	
 
-	for col in range(data[4].shape[1]-1):
-		X = np.hstack((X,X_build_col(data[4][:,col+1],degree)
+	for col in range(0,data[4].shape[1]-1):
+		X = np.column_stack((X,X_build_col(data[4][:,col+1],degree)
 ))
 
 	return X
@@ -236,10 +237,12 @@ def plot_reg(data,to_predict,reg,lam,D,print_coef):
 				Optimal D parameter (polynomial order) for regression
 
 	"""
-	###scaler = pre.StandardScaler()
-    ###scaleddata3 = scaler.fit_transform(data[3])
+
+	print("pre ridge t: ",data[3])
+	
 	years, preds = reg(data,to_predict,lam,D,print_coef)
 	plt.scatter(years, data[3], color = 'g')
+	print(preds)
 	plt.plot(years, preds, label="preds")
 	plt.title(reg)
 	plt.xlabel('Years')
@@ -281,3 +284,17 @@ def all_world_countries():
 	"""
 
 	return np.array(['Afghanistan','Albania','Algeria','Angola','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei Darussalam','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Costa Rica',"Cote d'Ivoire",'Croatia','Cuba','Cyprus','Czech Republic','Dem. Rep. Congo','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Lithuania','Luxembourg','Macao','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Macedonia','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Republic of Congo','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States of America','Uruguay','Uzbekistan','Vanuatu','Venezuela','Viet Nam','Yemen','Zambia','Zimbabwe'])
+
+def append_ones(X):
+
+      """ Appends row of ones to matrix.
+		
+		Args:
+
+			X::[Numpy Array]
+
+      """
+
+      ones = np.ones((X.shape[0],1))
+      return np.column_stack((ones,X))
+
