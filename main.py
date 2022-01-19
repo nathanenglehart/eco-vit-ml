@@ -17,20 +17,21 @@ from lib.kfcv import ridge_kfcv
 from lib.reg import ridge_regression
 from sklearn import preprocessing as pre
 
-from sklearn.model_selection import cross_validate
+
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
 def neuralnetwork(X,t):
     ### X represents the matrix for the train data and t represents the target data for the train set
+    ### In order to run we must scale the parameters using StandardScaler which standardizes using Zscore
     np.random.seed(0)
     scaler = pre.StandardScaler()
     X_train_scaled = scaler.fit_transform(X)
 
 
-    model = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50, max_iter=100000, learning_rate='constant',activation="logistic")
+    model = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50, max_iter=100000, learning_rate='constant',activation="identity")
     model.fit(X_train_scaled,t)
-    #print("coefs",model.coefs_)
+    print("coefs",model.coefs_)
     return model.predict(X_train_scaled)
 
 def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):

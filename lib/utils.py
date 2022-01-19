@@ -3,10 +3,11 @@ import pandas as pd
 
 from matplotlib import pyplot as plt
 
+
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
 def load_dataset():
-	
+
 	""" Loads datasets relavent to the project.
 
 		Args:
@@ -21,7 +22,7 @@ def load_dataset():
 
 	wtl_dataset = pd.read_csv("data/WTL_ind_na.csv")
 	wtl_dataset.columns = ['code','iso','country','WTL.ind.1995','WTL.ind.1996','WTL.ind.1997','WTL.ind.1998','WTL.ind.1999','WTL.ind.2000','WTL.ind.2001','WTL.ind.2002','WTL.ind.2003','WTL.ind.2004','WTL.ind.2005','WTL.ind.2006','WTL.ind.2007','WTL.ind.2008','WTL.ind.2009','WTL.ind.2010','WTL.ind.2011','WTL.ind.2012','WTL.ind.2013','WTL.ind.2014','WTL.ind.2015','WTL.ind.2016','WTL.ind.2017','WTL.ind.2018','WTL.ind.2019','WTL.ind.2020']
-	
+
 	#mld_dataset = pd.read_csv("data/percentchangeco2data.csv")
 	mld_dataset = pd.read_csv("data/mld_cleaned.csv")
 	mld_dataset.columns = ['code','iso','country','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020']
@@ -37,7 +38,7 @@ def load_dataset():
 	del grl_dataset['country']
 	del tcl_dataset['country']
 	del wtl_dataset['country']
-	
+
 	mld_dataset = pd.concat([mld_dataset,wtl_dataset],axis=1)
 	mld_dataset = pd.concat([mld_dataset,tcl_dataset],axis=1)
 	mld_dataset = pd.concat([mld_dataset,grl_dataset],axis=1)
@@ -45,7 +46,7 @@ def load_dataset():
 	return mld_dataset
 
 def build_dataset(dataset,countries,verbose):
-	
+
 	""" Returns multidimensional numpy array for quick searching given input dataset.
 
 		Args:
@@ -55,13 +56,13 @@ def build_dataset(dataset,countries,verbose):
 
 			countries::[Numpy array]
 				Array of the names of countries (string format) to load from datasets
-			
+
 			verbose::[Boolean]
 				Determines whether to run algorithms with verbose output
 
 	"""
 
-	
+
 
 	country_rows = list()
 
@@ -115,28 +116,28 @@ def build_dataset(dataset,countries,verbose):
 
 		if(verbose):
 			print("")
-		
+
 		t = np.array(t)
 		X = np.array(X,dtype=object).T
-		
+
 		check_t = True
 		check_X = True
-		
+
 		if((t.dtype.char == 'S') == False and np.isnan(np.sum(t)) == False):
 			check_t = True
 		else:
 			check_t = False
 
 		for i in range(len(X)):
-			
+
 			x = X[i]
-			
+
 			if((x.dtype.char == 'S') == True or np.isnan(np.sum(x)) == True):
 				check_X = False
 				break
-		
-		if(check_t == True and check_X == True):	
-			
+
+		if(check_t == True and check_X == True):
+
 			country.append(entry[0]) # code
 			country.append(entry[1]) # iso
 			country.append(entry[2]) # country
@@ -151,11 +152,11 @@ def build_dataset(dataset,countries,verbose):
 
 
 def build_world(countries):
-	
+
 	""" Returns averaged X matrix and t vector for all countries.
 
 		Args:
-			
+
 			countries::[Numpy array]
 				Array countaining X matrix and t vector for all loaded countries
 
@@ -167,22 +168,22 @@ def build_world(countries):
 	for i in range(len(countries)-1):
 		t = t + countries[i+1][3]
 		X = X + countries[i+1][4]
-	
+
 	return t / (len(countries)), X / (len(countries))
 
 
 def X_build_col(col,D):
-    
+
     """ Takes a single predictor column and a positive integer D, and creates a predictor matrix whose columns consist of powers of the entries in the original column from 0 to D.
 
 		Args:
-		
+
 			col::[Numpy Array]
                 		Single predictor column
-        
+
 	    		D::[Integer]
                 		Positive integer
-    
+
     """
 
     predictor_matrix = np.ones((len(col),D+1))
@@ -195,7 +196,7 @@ def X_build_col(col,D):
     return predictor_matrix
 
 def X_build(data,degree):
-	
+
 	""" Takes all columns in matrix, makes them into predictor matricies, and stacks them together horizontally.
 
 		Args:
@@ -214,14 +215,14 @@ def X_build(data,degree):
 	return X
 
 def plot_reg(data,to_predict,reg,lam,D,print_coef):
-	
+
 	""" Runs regression on data with given lambda and D parameters and shows graph output with matplotlib.
 
 		Args:
 
 			data::[Numpy Array]
 				Array that holds iso, name, code, t vector, and X matrix
-			
+
 			to_predict::[Numpy Array]
 				Matrix to predict with model
 
@@ -235,7 +236,8 @@ def plot_reg(data,to_predict,reg,lam,D,print_coef):
 				Optimal D parameter (polynomial order) for regression
 
 	"""
-
+	###scaler = pre.StandardScaler()
+    ###scaleddata3 = scaler.fit_transform(data[3])
 	years, preds = reg(data,to_predict,lam,D,print_coef)
 	plt.scatter(years, data[3], color = 'g')
 	plt.plot(years, preds, label="preds")
@@ -246,15 +248,15 @@ def plot_reg(data,to_predict,reg,lam,D,print_coef):
 
 def plot(data,years,preds):
 
-	""" Graphs two numpy arrays (year vs pred) against each other. 
-		
+	""" Graphs two numpy arrays (year vs pred) against each other.
+
 		Args:
 
 			data::[Numpy Array]
-				Array that holds iso, name, code, t vector, and X matrix	
+				Array that holds iso, name, code, t vector, and X matrix
 
 			years::[Numpy Array]
-				Array that holds years 
+				Array that holds years
 
 			preds::[Numpy Array]
 				Array that holds predicted values (from function)
@@ -266,16 +268,16 @@ def plot(data,years,preds):
 	plt.xlabel('Years')
 	plt.ylabel('Atmospheric Carbon Dioxide Levels (micromol/mol)')
 	plt.show()
-	
+
 
 def all_world_countries():
-	
+
 	""" Returns array containing string names for every country in the world.
-	
+
 		Args:
 
 			NA
-		
+
 	"""
 
 	return np.array(['Afghanistan','Albania','Algeria','Angola','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei Darussalam','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Costa Rica',"Cote d'Ivoire",'Croatia','Cuba','Cyprus','Czech Republic','Dem. Rep. Congo','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Lithuania','Luxembourg','Macao','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Macedonia','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Republic of Congo','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States of America','Uruguay','Uzbekistan','Vanuatu','Venezuela','Viet Nam','Yemen','Zambia','Zimbabwe'])
