@@ -8,7 +8,7 @@ from lib.utils import X_build
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
-def lasso_regression(data,lam,degree,print_coef=False):
+def lasso_regression(data,to_predict,lam,degree,print_coef=False):
 
 	""" Runs lasso regression with the given parameters and returns predictions corresponding to years.
 
@@ -16,6 +16,9 @@ def lasso_regression(data,lam,degree,print_coef=False):
 
 			data::[Numpy Array]
 				Array holding iso, name, code, t vector, and X matrix 
+
+			to_predict::[Numpy Array]
+				Matrix to predict with model
 
 			lam::[Float]
 				Weight penalty for high polynomial degrees
@@ -47,9 +50,9 @@ def lasso_regression(data,lam,degree,print_coef=False):
 		print("\nmodel coefficients")
 		print(model.coef_,"\n")
 	
-	return data[4][:,0], np.array(model.predict(X)) # years, predictionss 
+	return data[4][:,0], np.array(model.predict(X_build(to_predict,degree))) # years, predictionss 
 
-def ridge_regression(data,lam,degree,print_coef=False):
+def ridge_regression(data,to_predict,lam,degree,print_coef=False):
 	
 	""" Runs ridge regression with the given parameters and returns predictions corresponding to years.
 
@@ -57,6 +60,9 @@ def ridge_regression(data,lam,degree,print_coef=False):
 
 			data::[Numpy array]
 				Array holding iso, name, code, t vector, and X matrix
+			
+			to_predict::[Numpy Array]
+				Matrix to predict with model
 
 			lam::[Float]
 				Weight penalty for high polynomial degrees
@@ -88,5 +94,5 @@ def ridge_regression(data,lam,degree,print_coef=False):
 		print("model coefficients")
 		print(model.coef_,"\n")
 
-	return data[4][:,0], np.array(model.predict(X)) # years, predictionss 
+	return data[4][:,0], np.array(model.predict(X_build(to_predict,degree))) # years, predictionss 
 

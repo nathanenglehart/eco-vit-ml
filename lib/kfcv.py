@@ -93,25 +93,33 @@ def lasso_kfcv(lasso_function,data,k,seed,weight_penalty,degree,verbose):
 
 	t_vecs, X_matricies = split_by_year(data[3],data[4],k,seed)
 
-	for i in range(k):
+	for i in range(1,k+1):
 		
 		# set validation and train sets
 
-		validation = ['','','',np.array(t_vecs[i-1]), X_matricies[i-1]] # folds[i-1]
+		validation = ['','','',[],[]] # folds[i-1]
 		train = ['','','',[],[]] 
+
+		validation[3].append(np.array(t_vecs[i-1]))
+		validation[4].append(np.array(X_matricies[i-1]))
+		
 
 		for j in range(1,k+1):
 			if(j-1 != i-1):
+				
 				train[3].append(t_vecs[j-1])
 				train[4].append(X_matricies[j-1])
 	
 		train[4] = np.concatenate(np.array(train[4]))
 		train[3] = np.concatenate(np.array(train[3]))
+		
+		validation[4] = np.concatenate(np.array(validation[4]))
+		validation[3] = np.concatenate(np.array(validation[3]))
 
-		year, preds = lasso_function(np.array(train,dtype=object),weight_penalty,degree)
+		year, preds = lasso_function(np.array(train,dtype=object),validation,weight_penalty,degree)
 
-		mse_error += mean_squared_error(train[3],preds) # t, t_hat
-
+		mse_error += mean_squared_error(validation[3],preds) # t, t_hat
+		
 	return mse_error/k
 	
 def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):

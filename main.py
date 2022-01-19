@@ -153,7 +153,7 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
-		plot_reg(data,lasso_regression,lam,D,verbose)
+		plot_reg(data,data,lasso_regression,lam,D,verbose)
 		print("mse across folds:",lasso_kfcv(lasso_regression,data,k,seed,lam,D,verbose))
 
 	if(mode == 2):
@@ -179,7 +179,7 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
-		plot_reg(data,ridge_regression,lam,D,verbose)
+		plot_reg(data,data,ridge_regression,lam,D,verbose)
 		print("mse across folds:",ridge_kfcv(ridge_regression,data,k,seed,lam,D,verbose))
 		
 
