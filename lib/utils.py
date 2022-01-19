@@ -212,7 +212,7 @@ def X_build(data,degree):
 
 	return X
 
-def plot_reg(data,reg,lam,D,print_coef):
+def plot_reg(data,to_predict,reg,lam,D,print_coef):
 	
 	""" Runs regression on data with given lambda and D parameters and shows graph output with matplotlib.
 
@@ -221,6 +221,9 @@ def plot_reg(data,reg,lam,D,print_coef):
 			data::[Numpy Array]
 				Array that holds iso, name, code, t vector, and X matrix
 			
+			to_predict::[Numpy Array]
+				Matrix to predict with model
+
 			reg::[Function]
 				Regression function i.e. lasso or ridge
 
@@ -232,7 +235,7 @@ def plot_reg(data,reg,lam,D,print_coef):
 
 	"""
 
-	years, preds = reg(data,lam,D,print_coef)
+	years, preds = reg(data,to_predict,lam,D,print_coef)
 	plt.scatter(years, data[3], color = 'g')
 	plt.plot(years, preds, label="preds")
 	plt.xlabel('Years')

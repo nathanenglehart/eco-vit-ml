@@ -49,6 +49,9 @@ def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
 	"""
 
+	if(verbose):
+		print("grid search")
+
 	min_mse = cv(reg,data,k,seed,lams[0],degrees[0],verbose)
 	pair = degrees[0], lams[0]
 
@@ -61,9 +64,15 @@ def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 		for degree in degrees:
 
 			average_mse = cv(reg,data,k,seed,lam,degree,verbose)
-
+			
+			if(verbose):
+				print("D =",degree,"lam =",lam,"average mse:",average_mse)
+	
 			if(average_mse <= min_mse):
 				pair = degree, lam
+
+	if(verbose):
+		print("")
 
 	return pair
 
@@ -120,7 +129,13 @@ def driver(verbose,mode,country_names,seed,k):
 	# a singular t vector and X matrix for the world
 
 	t, X = build_world(countries)
-	data = np.array(['0','world','WOR',t,X],dtype=object)
+	data = np.array(['0','world','WOR',t,X / X.max(axis=0)],dtype=object)
+
+	lams = [0.001,0.01,0.1,1.0,10.0]
+	degrees = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+
+	if(verbose):
+		print("sanitized dataset\n")
 
 	if(mode == 1):
 
@@ -133,15 +148,13 @@ def driver(verbose,mode,country_names,seed,k):
 		# predicted vectors; once this is found, run lasso regression with optimal lambda and polynomial 
 		# order to generate predictions for each year and display findings with matplotlib
 
-		lams = [0.001,0.01,0.1,1.0,10.0]
-		degrees = [1,2,3,4,5,6,7]
-
 		D, lam = grid_search(lasso_kfcv,lasso_regression,lams,degrees,data,seed,k,verbose)
 			
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
-		plot_reg(data,lasso_regression,lam,D,False)
+		plot_reg(data,data,lasso_regression,lam,D,verbose)
+		print("mse across folds:",lasso_kfcv(lasso_regression,data,k,seed,lam,D,verbose))
 
 	if(mode == 2):
 
@@ -161,15 +174,15 @@ def driver(verbose,mode,country_names,seed,k):
 		# regression with optimal lambda and polynomial order to generate predictions for each year and 
 		# display findings with matplotlib; this part is run in the plot_reg function
 
-		lams = [0.001,0.01,0.1,1.0,10.0]
-		degrees = [1,2,3,4,5,6,7]
-
 		D, lam = grid_search(ridge_kfcv,ridge_regression,lams,degrees,data,seed,k,verbose)
 			
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 
-		plot_reg(data,ridge_regression,lam,D,False)	
+		plot_reg(data,data,ridge_regression,lam,D,verbose)
+		print("mse across folds:",ridge_kfcv(ridge_regression,data,k,seed,lam,D,verbose))
+		
+
 
 
 if __name__ == "__main__":
@@ -183,7 +196,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 3
+	mode = 1
 	countries = all_world_countries() 
 	seed = 40
 	k = 10

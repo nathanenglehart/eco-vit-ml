@@ -88,31 +88,40 @@ def lasso_kfcv(lasso_function,data,k,seed,weight_penalty,degree,verbose):
 				Option to run program with verbose output
 		
 	"""
-
+	
 	mse_error = 0
 
-	t_vecs, X_matricies = split_by_year(data[3],data[4],k,seed) 
+	t_vecs, X_matricies = split_by_year(data[3],data[4],k,seed)
 
-	for i in range(k):
+	for i in range(1,k+1):
 		
 		# set validation and train sets
 
-		validation = t_vecs[i-1], X_matricies[i-1] # folds[i-1]
-		train = list(), list() 
+		validation = ['','','',[],[]] # folds[i-1]
+		train = ['','','',[],[]] 
 
-		for j in range(k+1):
+		validation[3].append(np.array(t_vecs[i-1]))
+		validation[4].append(np.array(X_matricies[i-1]))
+		
+
+		for j in range(1,k+1):
 			if(j-1 != i-1):
-				train[0].append(t_vecs[j-1])
-				train[1].append(X_matricies[j-1])
+				
+				train[3].append(t_vecs[j-1])
+				train[4].append(X_matricies[j-1])
+	
+		train[4] = np.concatenate(np.array(train[4]))
+		train[3] = np.concatenate(np.array(train[3]))
+		
+		validation[4] = np.concatenate(np.array(validation[4]))
+		validation[3] = np.concatenate(np.array(validation[3]))
 
-		year, preds = lasso_function(data,weight_penalty,degree)
+		year, preds = lasso_function(np.array(train,dtype=object),validation,weight_penalty,degree)
 
-		t = data[3]
-
-		mse_error += mean_squared_error(t,preds)
-
+		mse_error += mean_squared_error(validation[3],preds) # t, t_hat
+		
 	return mse_error/k
-
+	
 def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
 
 	""" Returns array of error statistics from run of k fold cross validation for Lasso Regression. 
@@ -144,24 +153,25 @@ def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
 
 	mse_error = 0
 
-	t_vecs, X_matricies = split_by_year(data[3],data[4],k,seed) 
+	t_vecs, X_matricies = split_by_year(data[3],data[4],k,seed)
 
 	for i in range(k):
 		
 		# set validation and train sets
 
-		validation = t_vecs[i-1], X_matricies[i-1] # folds[i-1]
-		train = list(), list() 
+		validation = ['','','',np.array(t_vecs[i-1]), X_matricies[i-1]] # folds[i-1]
+		train = ['','','',[],[]] 
 
-		for j in range(k+1):
+		for j in range(1,k+1):
 			if(j-1 != i-1):
-				train[0].append(t_vecs[j-1])
-				train[1].append(X_matricies[j-1])
+				train[3].append(t_vecs[j-1])
+				train[4].append(X_matricies[j-1])
+	
+		train[4] = np.concatenate(np.array(train[4]))
+		train[3] = np.concatenate(np.array(train[3]))
 
-		year, preds = ridge_function(data,weight_penalty,degree)
+		year, preds = ridge_function(np.array(train,dtype=object),weight_penalty,degree)
 
-		t = data[3]
-
-		mse_error += mean_squared_error(t,preds)
+		mse_error += mean_squared_error(train[3],preds) # t, t_hat
 
 	return mse_error/k
