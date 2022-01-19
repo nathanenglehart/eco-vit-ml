@@ -134,7 +134,7 @@ def driver(verbose,mode,country_names,seed,k):
 	t, X = build_world(countries)
 	data = np.array(['0','world','WOR',t,X],dtype=object)
 
-	lams = [0.001,0.01,0.1,1.0,10.0]
+	lams = np.logspace(-6,2)
 	degrees = [1,2,3,4,5,6,7,8,9,10]
 
 	if(verbose):

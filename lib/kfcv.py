@@ -119,8 +119,23 @@ def lasso_kfcv(lasso_function,data,k,seed,weight_penalty,degree,verbose):
 
 		years, preds = lasso_function(np.array(train,dtype=object),validation,weight_penalty,degree)
 
+	
 		mse_error += mean_squared_error(validation[3],preds) # t, t_hat
-		
+	
+		# for debugging
+
+		if(False):
+			print("D =",degree)
+			print("lam =",weight_penalty)
+
+			plt.scatter(validation[4][:,0], validation[3], color = 'g')
+			plt.scatter(validation[4][:,0], preds, label="preds")
+			plt.xlabel('Years')
+			plt.ylabel('MLD')
+			plt.show()
+
+
+
 	return mse_error/k
 	
 def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
@@ -181,5 +196,17 @@ def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
 		years, preds = ridge_function(np.array(train,dtype=object),validation,weight_penalty,degree)
 	
 		mse_error += mean_squared_error(validation[3],preds) # t, t_hat
+		
+		# for debugging
+
+		if(False):
+			print("D =",degree)
+			print("lam =",weight_penalty)
+
+			plt.scatter(validation[4][:,0], validation[3], color = 'g')
+			plt.scatter(validation[4][:,0], preds, label="preds")
+			plt.xlabel('Years')
+			plt.ylabel('MLD')
+			plt.show()
 
 	return mse_error/k

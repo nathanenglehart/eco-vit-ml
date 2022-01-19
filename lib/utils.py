@@ -21,9 +21,9 @@ def load_dataset():
 
 	wtl_dataset = pd.read_csv("data/WTL_ind_na.csv")
 	wtl_dataset.columns = ['code','iso','country','WTL.ind.1995','WTL.ind.1996','WTL.ind.1997','WTL.ind.1998','WTL.ind.1999','WTL.ind.2000','WTL.ind.2001','WTL.ind.2002','WTL.ind.2003','WTL.ind.2004','WTL.ind.2005','WTL.ind.2006','WTL.ind.2007','WTL.ind.2008','WTL.ind.2009','WTL.ind.2010','WTL.ind.2011','WTL.ind.2012','WTL.ind.2013','WTL.ind.2014','WTL.ind.2015','WTL.ind.2016','WTL.ind.2017','WTL.ind.2018','WTL.ind.2019','WTL.ind.2020']
-
-	mld_dataset = pd.read_csv("data/mld_cleaned.csv")
+	
 	#mld_dataset = pd.read_csv("data/percentchangeco2data.csv")
+	mld_dataset = pd.read_csv("data/mld_cleaned.csv")
 	mld_dataset.columns = ['code','iso','country','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020']
 
 	del grl_dataset['code']
@@ -239,6 +239,7 @@ def plot_reg(data,to_predict,reg,lam,D,print_coef):
 	years, preds = reg(data,to_predict,lam,D,print_coef)
 	plt.scatter(years, data[3], color = 'g')
 	plt.plot(years, preds, label="preds")
+	plt.title(reg)
 	plt.xlabel('Years')
 	plt.ylabel('MLD')
 	plt.show()
