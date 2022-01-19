@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 
-from sklearn.neural_network import MLPClassifier
+from sklearn.neural_network import MLPRegressor
 
+from lib.utils import plot
 from lib.utils import all_world_countries
 from lib.utils import plot_reg
 from lib.utils import build_world
@@ -18,6 +19,14 @@ from lib.reg import ridge_regression
 from sklearn.model_selection import cross_validate
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
+
+def neuralnetwork(X,t):
+    ### X represents the matrix for the train data and t represents the target data for the train set
+    
+    model = MLPRegressor(max_iter=10000000,random_state=9,solver='lbfgs',activation='logistic')
+    model.fit(X,t)
+    #print("coefs",model.coefs_)
+    return model.predict(X)
 
 def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
@@ -163,6 +172,10 @@ def driver(verbose,mode,country_names,seed,k):
 
 		if(verbose):
 			print("mode 2: neural networks\n")
+		
+		preds = neuralnetwork(X,t)
+		plot(data,X[:,0],preds)
+
 
 	if(mode == 3):
 		
@@ -199,7 +212,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 1
+	mode = 2
 	countries = all_world_countries() 
 	seed = 40
 	k = 5

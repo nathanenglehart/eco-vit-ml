@@ -241,8 +241,32 @@ def plot_reg(data,to_predict,reg,lam,D,print_coef):
 	plt.plot(years, preds, label="preds")
 	plt.title(reg)
 	plt.xlabel('Years')
-	plt.ylabel('MLD')
+	plt.ylabel('Atmospheric Carbon Dioxide Levels (micromol/mol)')
 	plt.show()
+
+def plot(data,years,preds):
+
+	""" Graphs two numpy arrays (year vs pred) against each other. 
+		
+		Args:
+
+			data::[Numpy Array]
+				Array that holds iso, name, code, t vector, and X matrix	
+
+			years::[Numpy Array]
+				Array that holds years 
+
+			preds::[Numpy Array]
+				Array that holds predicted values (from function)
+
+	"""
+
+	plt.scatter(years,data[3], color ='g')
+	plt.plot(years,preds,label='preds')
+	plt.xlabel('Years')
+	plt.ylabel('Atmospheric Carbon Dioxide Levels (micromol/mol)')
+	plt.show()
+	
 
 def all_world_countries():
 	

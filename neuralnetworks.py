@@ -10,6 +10,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.neural_network import MLPRegressor
 from sklearn.datasets import make_regression
 from sklearn.model_selection import train_test_split
+
 def neuralnetwork(X,t):
     ### X represents the matrix for the train data and t represents the target data for the train set
     model = MLPRegresson.fit(X,t)
@@ -58,5 +59,6 @@ def grid_search(cv,lams,X,seed,k,verbose):
 
 			if(average_mse < min_mse):
 				pair = degree, lam
+				min_mse = average_mse
 
 	return pair
