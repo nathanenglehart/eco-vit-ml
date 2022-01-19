@@ -132,10 +132,10 @@ def driver(verbose,mode,country_names,seed,k):
 	# a singular t vector and X matrix for the world
 
 	t, X = build_world(countries)
-	data = np.array(['0','world','WOR',t,X / X.max(axis=0)],dtype=object)
+	data = np.array(['0','world','WOR',t,X],dtype=object)
 
 	lams = [0.001,0.01,0.1,1.0,10.0]
-	degrees = [1,2,3,4,5,6,7]
+	degrees = [1,2,3,4,5,6,7,8,9,10]
 
 	if(verbose):
 		print("sanitized dataset\n")
@@ -199,9 +199,9 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 3
+	mode = 1
 	countries = all_world_countries() 
 	seed = 40
-	k = 25
+	k = 5
 
 	driver(verbose,mode,countries,seed,k)
