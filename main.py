@@ -230,7 +230,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 2
+	mode =4
 	countries = all_world_countries()
 	seed = 40
 	k = 5

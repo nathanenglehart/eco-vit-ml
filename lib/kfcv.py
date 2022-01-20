@@ -201,6 +201,10 @@ def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
 		years, preds = ridge_function(np.array(train,dtype=object),validation,weight_penalty,degree)
 
 		mse_error += mean_squared_error(validation[3],preds) # t, t_hat
+		
+		print("\nval:",validation[3])
+		print("preds:",preds)
+		print("mse:",mean_squared_error(validation[3],preds) )
 
 		# for debugging
 
@@ -272,8 +276,11 @@ def neural_network_kfcv(neural_network_function,data,k,seed,weight_penalty,activ
 		validation[3] = np.concatenate(np.array(validation[3]))
 
 		preds = neural_network_function(train[4],train[3],validation[4],weight_penalty,activation_function)
-
+	
+		
 		mse_error += mean_squared_error(validation[3],preds) # t, t_hat
+
+
 
 		# for debugging
 
@@ -286,6 +293,9 @@ def neural_network_kfcv(neural_network_function,data,k,seed,weight_penalty,activ
 			plt.xlabel('Years')
 			plt.ylabel('MLD')
 			plt.show()
+
+	print("completed:",mse_error/k)
+	
 
 	return mse_error/k
 

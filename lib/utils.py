@@ -189,7 +189,7 @@ def X_build_col(col,D):
     predictor_matrix = np.ones((len(col),D+1))
 
     for i in range(0,len(col)):
-        for j in range(0,D+1):
+        for j in range(0,D):
             val = col[i]**(j)
             predictor_matrix[i][j] = val
 
