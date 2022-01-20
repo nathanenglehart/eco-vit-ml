@@ -3,6 +3,7 @@ import pandas as pd
 
 from sklearn.linear_model import Lasso
 from sklearn.linear_model import Ridge
+from sklearn.neural_network import MLPRegressor
 from sklearn import preprocessing as pre
 
 from lib.utils import X_build
@@ -98,89 +99,42 @@ def ridge_regression(data,to_predict,lam,degree,print_coef=False):
 
 	return data[4][:,0], np.array(model.predict(X_build(to_predict,degree))) # years, predictionss 
 
-def qr(X):
+def neural_network(X,t,X_test,weight_penalty,activation_function):
+    
+    """ Returns predictions for mlp regression neural network.
 
-    """ Computes Q and R for the input matrix X.
-
-		Args:
+    		Args:
 
 			X::[Numpy Array]
-                		Matrix for which to compute the QR.
-    
-    """
+				Train matrix
 
-    return np.linalg.qr(X)
-
-
-def targetvector(data,t,Xnew,lambda_value,D):
-    
-    """ Builds the weights for ridge regression. 
-
-		Args:
-			
 			t::[Numpy Array]
 				Target vector
 
-			Xnew::[Numpy Array]
-				Train matrix
+			X_test::[Numpy Array]
+				Matrix to return predictions for
 
-			lambda_value::[Float]
-				Weight penalty for high polynomial orders
+			weight_penalty::[Float]
+				Penalty for large coefficients
+			
+			activation_function::[Function]
+				Non-linear function used for neural networks
 
-			D::[Integer]
-				Polynomial order for ridge function
-	
     """
 
-
-    X = X_build(data, D)
+    ### X represents the matrix for the train data and t represents the target data for the train set
+    ### In order to run we must scale the parameters using StandardScaler which standardizes using Zscore
     
-    QR = qr(X)
-
+    np.random.seed(0)
+    scaler = pre.StandardScaler()
+    X_train_scaled = scaler.fit_transform(X)
+    X_test = scaler.fit_transform(X_test)
+    model = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50, max_iter=100000, learning_rate='constant',activation=activation_function,alpha=weight_penalty)
+    model.fit(X_train_scaled,t)
     
+    #print("coefs",model.coefs_)
 
-    I = np.identity(X.shape[1])
-    
-    #print("I:",I)
-
-    lam = I * lambda_value
-    lam[0][0] = 0
-    
-    
-    here = np.matmul(np.linalg.inv(I + lam), QR[0].T)
-
-    theta = np.matmul(here, t)
-    
-    w = np.matmul(np.linalg.inv(QR[1]), theta)
-    
-    return np.array(w)
-
-
-def apply_ridge(data,X,t,to_predict,lam,D):
-	
-	""" Returns predicted values for model based on X and t.
-
-		t::[Numpy Array]
-			Target vector
-
-		X::[Numpy Array]
-			Train Matrix
-
-		to_predict::[Numpy Array]
-			Matrix to predict values for e.g. test matrix
-		
-		lam::[Float]
-			Lambda value (weight penalty for high polynomial orders)
-
-		D::[Integer]
-			Polynomial order for ridge function
-
-	"""
-
-	weights = targetvector(data,t,X,lam,D)
-	values = np.dot(X_build(data,D),weights) # changed to_predict -> X
-	
-	return values
+    return model.predict(X_test)
 
 def local_ridge_regression(data,to_predict,lam,degree,print_coef=False):
 	

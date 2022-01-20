@@ -216,5 +216,77 @@ def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
 
 	return mse_error/k
 
+def neural_network_kfcv(neural_network_function,data,k,seed,weight_penalty,activation_function,verbose):
+
+	""" Returns array of error statistics from run of k fold cross validation for Lasso Regression.
+
+		Args:
+
+			neural_network_function::[Function]
+				Neural network function
+
+			data::[Numpy array]
+				Array holding iso, name, code, t vector, and X matrix
+
+			k::[Integer]
+				Number of folds to split the dataset into
+
+			seed::[Integer]
+				Seed used to randomly split the given dataset into k folds
+
+			weight_penalty::[Float]
+				Penalty for high degree polynomials in model
+
+			activation_function::[String]
+				Parameter for neutral network function
+
+			verbose::[Boolean]
+				Option to run program with verbose output
+
+	"""
+
+	mse_error = 0
+
+	t_vecs, X_matricies = split_by_year(data[3],data[4],k,seed)
+
+	for i in range(1,k+1):
+
+		# set validation and train sets
+
+		validation = ['','','',[], []] # folds[i-1]
+		train = ['','','',[],[]]
+
+		validation[3].append(np.array(t_vecs[i-1]))
+		validation[4].append(np.array(X_matricies[i-1]))
+
+
+		for j in range(1,k+1):
+			if(j-1 != i-1):
+				train[3].append(t_vecs[j-1])
+				train[4].append(X_matricies[j-1])
+
+		train[4] = np.concatenate(np.array(train[4]))
+		train[3] = np.concatenate(np.array(train[3]))
+
+		validation[4] = np.concatenate(np.array(validation[4]))
+		validation[3] = np.concatenate(np.array(validation[3]))
+
+		preds = neural_network_function(train[4],train[3],validation[4],weight_penalty,activation_function)
+
+		mse_error += mean_squared_error(validation[3],preds) # t, t_hat
+
+		# for debugging
+
+		if(False):
+			print("D =",degree)
+			print("lam =",weight_penalty)
+
+			plt.scatter(validation[4][:,0], validation[3], color = 'g')
+			plt.scatter(validation[4][:,0], preds, label="preds")
+			plt.xlabel('Years')
+			plt.ylabel('MLD')
+			plt.show()
+
+	return mse_error/k
 
 

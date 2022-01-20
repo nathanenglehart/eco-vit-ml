@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 
-from sklearn.neural_network import MLPRegressor
-from sklearn import preprocessing as pre
 
 from lib.utils import plot
 from lib.utils import all_world_countries
@@ -16,21 +14,13 @@ from lib.reg import lasso_regression
 
 from lib.kfcv import ridge_kfcv
 from lib.reg import ridge_regression
+
 from lib.reg import local_ridge_regression
 
+from lib.reg import neural_network
+from lib.kfcv import neural_network_kfcv
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
-
-def neuralnetwork(X,t):
-    ### X represents the matrix for the train data and t represents the target data for the train set
-    ### In order to run we must scale the parameters using StandardScaler which standardizes using Zscore
-    np.random.seed(0)
-    scaler = pre.StandardScaler()
-    X_train_scaled = scaler.fit_transform(X)
-    model = MLPRegressor(solver='lbfgs', hidden_layer_sizes=50, max_iter=100000, learning_rate='constant',activation="identity")
-    model.fit(X_train_scaled,t)
-    print("coefs",model.coefs_)
-    return model.predict(X_train_scaled)
 
 def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 
@@ -147,7 +137,7 @@ def driver(verbose,mode,country_names,seed,k):
 	t, X = build_world(countries)
 	data = np.array(['0','world','WOR',t,X],dtype=object)
 
-	lams = np.logspace(-6,2)
+	lams = np.logspace(-6,2,num=10)
 	degrees = [1,2,3,4,5,6,7,8,9,10]
 
 	if(verbose):
@@ -177,9 +167,16 @@ def driver(verbose,mode,country_names,seed,k):
 		if(verbose):
 			print("mode 2: neural networks\n")
 
-		preds = neuralnetwork(X,t)
-		plot(data,X[:,0],preds)
+		functions = ['relu','logistic','tanh']
 
+		#preds = neural_network(X,t,X,0.1,'relu') # 'logistic', 'tanh'
+		
+		function, lam = grid_search(neural_network_kfcv,neural_network,lams,functions,data,seed,k,verbose)
+
+		preds = neural_network(data[4],data[3],data[4],lam,function)
+
+		plot(data,X[:,0],preds)
+		print("mse across folds:",neural_network_kfcv(neural_network,data,k,seed,lam,function,verbose))
 
 	if(mode == 3):
 
@@ -218,7 +215,7 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 		
-
+		#plot_reg(data,data,local_ridge_regression,5.0,4,verbose)
 		plot_reg(data,data,local_ridge_regression,lam,D,verbose)
 		print("mse across folds:",ridge_kfcv(local_ridge_regression,data,k,seed,lam,D,verbose))
 
@@ -233,7 +230,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 4
+	mode = 2
 	countries = all_world_countries()
 	seed = 40
 	k = 5
