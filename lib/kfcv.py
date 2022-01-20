@@ -202,9 +202,9 @@ def ridge_kfcv(ridge_function,data,k,seed,weight_penalty,degree,verbose):
 
 		mse_error += mean_squared_error(validation[3],preds) # t, t_hat
 		
-		print("\nval:",validation[3])
-		print("preds:",preds)
-		print("mse:",mean_squared_error(validation[3],preds) )
+		#print("\nval:",validation[3])
+		#print("preds:",preds)
+		#print("mse:",mean_squared_error(validation[3],preds) )
 
 		# for debugging
 

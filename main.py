@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 
-
 from lib.utils import plot
 from lib.utils import all_world_countries
 from lib.utils import plot_reg
@@ -22,7 +21,7 @@ from lib.kfcv import neural_network_kfcv
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
-def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
+def grid_search(cv,reg,lams,degrees,data,seed,k,verbose,nn_output=False):
 
 	""" Calculates and returns the optimal D and lambda parameters after running grid search on given model.
 
@@ -71,7 +70,10 @@ def grid_search(cv,reg,lams,degrees,data,seed,k,verbose):
 			average_mse = cv(reg,data,k,seed,lam,degree,verbose)
 
 			if(verbose):
-				print("D =",degree,"lam =",lam,"average mse:",average_mse)
+				if(nn_output):
+					print("activation function =",degree,"lam =",lam,"average mse:",average_mse)
+				else:
+					print("D =",degree,"lam =",lam,"average mse:",average_mse)
 
 			if(average_mse < min_mse):
 				pair = degree, lam
@@ -171,7 +173,7 @@ def driver(verbose,mode,country_names,seed,k):
 
 		#preds = neural_network(X,t,X,0.1,'relu') # 'logistic', 'tanh'
 		
-		function, lam = grid_search(neural_network_kfcv,neural_network,lams,functions,data,seed,k,verbose)
+		function, lam = grid_search(neural_network_kfcv,neural_network,lams,functions,data,seed,k,verbose,nn_output=True)
 
 		preds = neural_network(data[4],data[3],data[4],lam,function)
 
@@ -230,7 +232,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode =4
+	mode = 3
 	countries = all_world_countries()
 	seed = 40
 	k = 5

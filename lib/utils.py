@@ -238,11 +238,13 @@ def plot_reg(data,to_predict,reg,lam,D,print_coef):
 
 	"""
 
-	print("pre ridge t: ",data[3])
+	#print("pre ridge t: ",data[3])
 	
 	years, preds = reg(data,to_predict,lam,D,print_coef)
 	plt.scatter(years, data[3], color = 'g')
-	print(preds)
+	
+	#print(preds)
+	
 	plt.plot(years, preds, label="preds")
 	plt.title(reg)
 	plt.xlabel('Years')
