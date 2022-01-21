@@ -6,6 +6,7 @@ from sklearn.linear_model import Ridge
 from sklearn.neural_network import MLPRegressor
 from sklearn import preprocessing as pre
 
+from lib.utils import qr
 from lib.utils import X_build
 from lib.local_reg_class import LocalRidge
 
@@ -26,8 +27,8 @@ def lasso_regression(data,to_predict,lam,degree,print_coef=False):
 			lam::[Float]
 				Weight penalty for high polynomial degrees
 
-			degree::[Integer]
-				Polynomial degree to use with lasso regression
+			degree::[Integer list]
+				List of polynomial degree to use with lasso regression
 			
 			print_coef::[Boolean]
 				Whether or not to print the model's coefficients
@@ -70,14 +71,26 @@ def ridge_regression(data,to_predict,lam,degree,print_coef=False):
 			lam::[Float]
 				Weight penalty for high polynomial degrees
 
-			degree::[Integer]
-				Polynomial degree to use with ridge regression
+			degree::[Integer list]
+				List of polynomial degree to use with ridge regression
 
 			print_coef::[Boolean]
 				Whether or not to print the model's coefficients (default is to not)
 		
 	"""
-	
+
+	# standardize by taking the QR decomposition of X before passing it through the input
+	# need to do the same for the matrix that we will be predicting, to_predict, as well
+	# uses numpy.linalg - qr
+
+	QR = qr(data[4])
+	Q = QR[0]
+	data[4] = Q # seems to throw off fit
+
+	QR = qr(to_predict[4])
+	Q = QR[0]
+	to_predict[4] = Q
+
 	# like in lasso regression, first we
 	# pull out each column from X matrix
 	# run build each column into matrix
@@ -151,14 +164,27 @@ def local_ridge_regression(data,to_predict,lam,degree,print_coef=False):
 			lam::[Float]
 				Weight penalty for high polynomial degrees
 
-			degree::[Integer]
-				Polynomial degree to use with ridge regression
+			degree::[Integer list]
+				List of polynomial degree to use with ridge regression
 
 			print_coef::[Boolean]
 				Whether or not to print the model's coefficients (default is to not)
 		
 	"""
 	
+
+	# standardize by taking the QR decomposition of X before passing it through the input
+	# need to do the same for the matrix that we will be predicting, to_predict, as well
+	# uses numpy.linalg - qr
+
+	QR = qr(data[4])
+	Q = QR[0]
+	data[4] = Q # seems to throw off fit
+
+	QR = qr(to_predict[4])
+	Q = QR[0]
+	to_predict[4] = Q
+
 	# like in lasso regression, first we
 	# pull out each column from X matrix
 	# run build each column into matrix

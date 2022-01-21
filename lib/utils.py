@@ -3,14 +3,27 @@ import pandas as pd
 
 from matplotlib import pyplot as plt
 
-
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
+
+def qr(X):
+
+	""" Computes Q and R for X matrix.
+    		
+		Args:
+            		
+			X::[Numpy Array]
+                		Matrix for which to compute the QR. Note: run before X_build()
+    	"""
+	
+	return np.linalg.qr(X)
 
 def load_dataset():
 
 	""" Loads datasets relavent to the project.
 
 		Args:
+			
+			NA
 
 	"""
 
@@ -181,10 +194,13 @@ def X_build_col(col,D):
 			col::[Numpy Array]
                 		Single predictor column
 
-	    		D::[Integer]
-                		Positive integer
+	    		D::[Integeri list]
+                		List of positive integer to be used as polynomial orders
 
     """
+
+    # create a D + 1 matrix from the column matrix
+
 
     predictor_matrix = np.ones((len(col),D+1))
 
@@ -203,15 +219,27 @@ def X_build(data,degree):
 
 			data::[Numpy Array]
 				Array that holds iso, name, code, t vector, and X matrix
+			
+			degree::[Integer list]
+				List that holds all polynomial orders to use in building our matrix
 
 	"""
 
-	X = X_build_col(data[4][:,0],degree)
-	
+	# for each column, expand into D + 1 matrix that is from 0 to D, raise each column to the power
+	# of the current power, add it to the column matrix; once reaching D, add it to the matrix
+
+	place = 0
+
+	D = degree[place]
+
+	X = X_build_col(data[4][:,0],D)
+
+	place += 1
 
 	for col in range(0,data[4].shape[1]-1):
-		X = np.column_stack((X,X_build_col(data[4][:,col+1],degree)
-))
+		D = degree[place]
+		X = np.column_stack((X,X_build_col(data[4][:,col+1],D)))
+		place += 1
 
 	return X
 

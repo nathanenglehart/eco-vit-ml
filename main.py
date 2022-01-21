@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 import pandas as pd
 
@@ -140,7 +142,8 @@ def driver(verbose,mode,country_names,seed,k):
 	data = np.array(['0','world','WOR',t,X],dtype=object)
 
 	lams = np.logspace(-6,2,num=10)
-	degrees = [1,2,3,4,5,6,7,8,9,10]
+	individual_degrees = [1,2,3,4]
+	degrees = list(itertools.permutations(individual_degrees))
 
 	if(verbose):
 		print("sanitized dataset\n")
@@ -171,8 +174,6 @@ def driver(verbose,mode,country_names,seed,k):
 
 		functions = ['relu','logistic','tanh']
 
-		#preds = neural_network(X,t,X,0.1,'relu') # 'logistic', 'tanh'
-		
 		function, lam = grid_search(neural_network_kfcv,neural_network,lams,functions,data,seed,k,verbose,nn_output=True)
 
 		preds = neural_network(data[4],data[3],data[4],lam,function)
@@ -232,7 +233,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 3
+	mode = 4
 	countries = all_world_countries()
 	seed = 40
 	k = 5
