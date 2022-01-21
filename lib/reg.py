@@ -85,11 +85,17 @@ def ridge_regression(data,to_predict,lam,degree,print_coef=False):
 
 	QR = qr(data[4])
 	Q = QR[0]
-	data[4] = Q # seems to throw off fit
+	#data[4] = Q
 
 	QR = qr(to_predict[4])
 	Q = QR[0]
-	to_predict[4] = Q
+	#to_predict[4] = Q
+
+	# otherwise we can also use preprocessing instead of qr decomposition
+
+	scaler = pre.StandardScaler()
+	data[4] = scaler.fit_transform(data[4])
+	to_predict[4] = scaler.fit_transform(to_predict[4])
 
 	# like in lasso regression, first we
 	# pull out each column from X matrix
@@ -179,11 +185,17 @@ def local_ridge_regression(data,to_predict,lam,degree,print_coef=False):
 
 	QR = qr(data[4])
 	Q = QR[0]
-	data[4] = Q # seems to throw off fit
+	#data[4] = Q # seems to throw off fit
 
 	QR = qr(to_predict[4])
 	Q = QR[0]
-	to_predict[4] = Q
+	#to_predict[4] = Q
+
+	# otherwise we can also use preprocessing instead of qr decomposition
+
+	scaler = pre.StandardScaler()
+	data[4] = scaler.fit_transform(data[4])
+	to_predict[4] = scaler.fit_transform(to_predict[4])
 
 	# like in lasso regression, first we
 	# pull out each column from X matrix
