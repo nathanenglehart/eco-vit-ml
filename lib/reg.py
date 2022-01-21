@@ -34,6 +34,24 @@ def lasso_regression(data,to_predict,lam,degree,print_coef=False):
 				Whether or not to print the model's coefficients
 
 	"""
+	# standardize by taking the QR decomposition of X before passing it through the input
+	# need to do the same for the matrix that we will be predicting, to_predict, as well
+	# uses numpy.linalg - qr
+
+	QR = qr(data[4])
+	Q = QR[0]
+	#data[4] = Q
+
+	QR = qr(to_predict[4])
+	Q = QR[0]
+	#to_predict[4] = Q
+
+	# otherwise we can also use preprocessing instead of qr decomposition
+
+	scaler = pre.StandardScaler()
+	data[4] = scaler.fit_transform(data[4])
+	to_predict[4] = scaler.fit_transform(to_predict[4])
+
 
 	# pull out each column from X matrix
 	# run build each column into matrix

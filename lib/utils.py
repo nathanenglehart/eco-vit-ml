@@ -328,3 +328,39 @@ def append_ones(X):
       ones = np.ones((X.shape[0],1))
       return np.column_stack((ones,X))
 
+
+combos = list()
+
+def get_all_degree_combinations(set, k):
+
+	""" Generates all possible combinations of polynomial orders to test.
+
+		Args:
+			
+			degrees::[Integer list]
+				List of polynomial degrees to get combinations for
+
+	"""
+
+	n = len(set)
+	printAllKLengthRec(set, "", n, k)
+
+	return combos
+
+def printAllKLengthRec(set, prefix, n, k):
+	
+	if (k == 0) :
+		ret = list()
+		for i in range(0,n):
+			ret.append(int(prefix[i]))
+		combos.append(ret)
+		return
+		
+
+	for i in range(n):
+
+		newPrefix = prefix + set[i]
+		
+		printAllKLengthRec(set, newPrefix, n, k - 1)
+
+

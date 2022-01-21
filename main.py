@@ -3,6 +3,9 @@ import itertools
 import numpy as np
 import pandas as pd
 
+#get_all_degree_combinations(degrees, k):
+
+from lib.utils import get_all_degree_combinations
 from lib.utils import plot
 from lib.utils import all_world_countries
 from lib.utils import plot_reg
@@ -142,8 +145,10 @@ def driver(verbose,mode,country_names,seed,k):
 	data = np.array(['0','world','WOR',t,X],dtype=object)
 
 	lams = np.logspace(-6,2,num=10)
-	individual_degrees = [1,2,3,4]
-	degrees = list(itertools.permutations(individual_degrees))
+	individual_degrees = ['1','2','3','4']
+	#degrees = list(itertools.permutations(individual_degrees))
+	degrees = get_all_degree_combinations(individual_degrees, 4)
+	print(type(degrees[0][0]))	
 
 	if(verbose):
 		print("sanitized dataset\n")
