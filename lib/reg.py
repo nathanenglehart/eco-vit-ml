@@ -196,7 +196,6 @@ def local_ridge_regression(data,to_predict,lam,degree,print_coef=False):
 		
 	"""
 	
-
 	# standardize by taking the QR decomposition of X before passing it through the input
 	# need to do the same for the matrix that we will be predicting, to_predict, as well
 	# uses numpy.linalg - qr
@@ -223,8 +222,6 @@ def local_ridge_regression(data,to_predict,lam,degree,print_coef=False):
 
 	X = X_build(data,degree)
 	
-
-
 	## run ridge regression
 
 	model = LocalRidge(lam=lam)

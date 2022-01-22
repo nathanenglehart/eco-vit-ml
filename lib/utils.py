@@ -329,9 +329,9 @@ def append_ones(X):
       return np.column_stack((ones,X))
 
 
-combos = list()
+combinations = list()
 
-def get_all_degree_combinations(set, k):
+def get_all_degree_combinations(degrees, k):
 
 	""" Generates all possible combinations of polynomial orders to test.
 
@@ -342,25 +342,51 @@ def get_all_degree_combinations(set, k):
 
 	"""
 
-	n = len(set)
-	printAllKLengthRec(set, "", n, k)
+	for i in range(len(degrees)):
+		degrees[i] = str(degrees[i])
 
-	return combos
+	n = len(degrees)
 
-def printAllKLengthRec(set, prefix, n, k):
-	
+	get_all_degree_combinations_rec_helper(degrees, "", n, k)
+
+	return combinations
+
+def get_all_degree_combinations_rec_helper(degrees, current, n, k):
+
+	""" Recursive helper for generating all possible combinations of polynomial orders to test.
+
+		Args:
+
+			degrees::[Character list]
+				List of polynomial degrees to get combinations for
+
+			current::[String]
+				Current string prefix
+
+			n::[Integer]
+				Actual length of combination
+
+			k::[Integer]
+				Current length in recursive helper (which starts at n)
+
+	"""
+
 	if (k == 0) :
+
 		ret = list()
+
 		for i in range(0,n):
-			ret.append(int(prefix[i]))
-		combos.append(ret)
+			ret.append(int(current[i]))
+
+		combinations.append(ret)
+
 		return
 		
 
 	for i in range(n):
 
-		newPrefix = prefix + set[i]
+		new = current + degrees[i]
 		
-		printAllKLengthRec(set, newPrefix, n, k - 1)
+		get_all_degree_combinations_rec_helper(degrees, new, n, k - 1)
 
 
