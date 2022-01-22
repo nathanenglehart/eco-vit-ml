@@ -148,7 +148,6 @@ def driver(verbose,mode,country_names,seed,k):
 	individual_degrees = [1,2,3,4]
 	#degrees = list(itertools.permutations(individual_degrees))
 	degrees = get_all_degree_combinations(individual_degrees, 4)
-	print(type(degrees[0][0]))	
 
 	if(verbose):
 		print("sanitized dataset\n")
@@ -184,6 +183,7 @@ def driver(verbose,mode,country_names,seed,k):
 		preds = neural_network(data[4],data[3],data[4],lam,function)
 
 		plot(data,X[:,0],preds)
+
 		print("mse across folds:",neural_network_kfcv(neural_network,data,k,seed,lam,function,verbose))
 
 	if(mode == 3):
@@ -213,17 +213,12 @@ def driver(verbose,mode,country_names,seed,k):
 			print("mode 4: local ridge regression\n")
 
 		# same as ridge regression except that we use a locally coded function instead of sklearn
-		# ridge_regression(data,to_predict,lam,degree,print_coef=False)
-
-		#scaler = pre.StandardScaler()
-		#data[4] = scaler.fit_transform(data[4])
 
 		D, lam = grid_search(ridge_kfcv,local_ridge_regression,lams,degrees,data,seed,k,verbose)
 
 		print("optimal D:",D)
 		print("optimal lambda:",lam)
 		
-		#plot_reg(data,data,local_ridge_regression,5.0,4,verbose)
 		plot_reg(data,data,local_ridge_regression,lam,D,verbose)
 		print("mse across folds:",ridge_kfcv(local_ridge_regression,data,k,seed,lam,D,verbose))
 
@@ -238,7 +233,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 4
+	mode = 1
 	countries = all_world_countries()
 	seed = 40
 	k = 5

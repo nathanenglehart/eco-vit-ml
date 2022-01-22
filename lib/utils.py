@@ -264,15 +264,14 @@ def plot_reg(data,to_predict,reg,lam,D,print_coef):
 			D::[Integer]
 				Optimal D parameter (polynomial order) for regression
 
+			print_coef::[Boolean]
+				Whether or not to print the model coefficients
+
 	"""
 
-	#print("pre ridge t: ",data[3])
 	
 	years, preds = reg(data,to_predict,lam,D,print_coef)
 	plt.scatter(years, data[3], color = 'g')
-	
-	#print(preds)
-	
 	plt.plot(years, preds, label="preds")
 	plt.title(reg)
 	plt.xlabel('Years')

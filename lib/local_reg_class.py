@@ -1,7 +1,5 @@
 import numpy as np
 
-from lib.utils import append_ones
-
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
 class LocalRidge():
@@ -33,12 +31,17 @@ class LocalRidge():
 
       """
 
-      X = append_ones(X)
       I = np.identity(X.shape[1])
       I[0, 0] = 0
       lam_matrix = self.lam * I
       theta = np.linalg.inv(X.T.dot(X) + lam_matrix).dot(X.T).dot(t)
+      
       self.theta = theta
+      
+      # for further compatibility with sklearn based methods
+
+      self.coef_ = theta
+      
       return self
 
   def predict(self, X):
@@ -52,8 +55,6 @@ class LocalRidge():
 
       """
 
-      theta = self.theta
-      preds = append_ones(X)
-      self.predictions = preds.dot(theta)
+      self.predictions = X.dot(self.theta)
 
       return self.predictions

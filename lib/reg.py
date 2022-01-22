@@ -34,19 +34,8 @@ def lasso_regression(data,to_predict,lam,degree,print_coef=False):
 				Whether or not to print the model's coefficients
 
 	"""
-	# standardize by taking the QR decomposition of X before passing it through the input
-	# need to do the same for the matrix that we will be predicting, to_predict, as well
-	# uses numpy.linalg - qr
 
-	QR = qr(data[4])
-	Q = QR[0]
-	#data[4] = Q
-
-	QR = qr(to_predict[4])
-	Q = QR[0]
-	#to_predict[4] = Q
-
-	# otherwise we can also use preprocessing instead of qr decomposition
+	# Standardize columns of X (with z-scores) before applying regularized regression
 
 	scaler = pre.StandardScaler()
 	data[4] = scaler.fit_transform(data[4])
@@ -72,7 +61,9 @@ def lasso_regression(data,to_predict,lam,degree,print_coef=False):
 		print("\nmodel coefficients")
 		print(model.coef_,"\n")
 	
-	return data[4][:,0], np.array(model.predict(X_build(to_predict,degree))) # years, predictionss
+	years = data[4][:,0]
+
+	return years, np.array(model.predict(X_build(to_predict,degree))) # years, predictionss
 
 def ridge_regression(data,to_predict,lam,degree,print_coef=False):
 	
@@ -97,19 +88,7 @@ def ridge_regression(data,to_predict,lam,degree,print_coef=False):
 		
 	"""
 
-	# standardize by taking the QR decomposition of X before passing it through the input
-	# need to do the same for the matrix that we will be predicting, to_predict, as well
-	# uses numpy.linalg - qr
-
-	QR = qr(data[4])
-	Q = QR[0]
-	#data[4] = Q
-
-	QR = qr(to_predict[4])
-	Q = QR[0]
-	#to_predict[4] = Q
-
-	# otherwise we can also use preprocessing instead of qr decomposition
+	# Standardize columns of X (with z-scores) before applying regularized regression
 
 	scaler = pre.StandardScaler()
 	data[4] = scaler.fit_transform(data[4])
@@ -134,7 +113,9 @@ def ridge_regression(data,to_predict,lam,degree,print_coef=False):
 		print("model coefficients")
 		print(model.coef_,"\n")
 
-	return data[4][:,0], np.array(model.predict(X_build(to_predict,degree))) # years, predictionss 
+	years = data[4][:,0]
+
+	return years, np.array(model.predict(X_build(to_predict,degree))) # years, predictionss 
 
 def neural_network(X,t,X_test,weight_penalty,activation_function):
     
@@ -196,19 +177,7 @@ def local_ridge_regression(data,to_predict,lam,degree,print_coef=False):
 		
 	"""
 	
-	# standardize by taking the QR decomposition of X before passing it through the input
-	# need to do the same for the matrix that we will be predicting, to_predict, as well
-	# uses numpy.linalg - qr
-
-	QR = qr(data[4])
-	Q = QR[0]
-	#data[4] = Q # seems to throw off fit
-
-	QR = qr(to_predict[4])
-	Q = QR[0]
-	#to_predict[4] = Q
-
-	# otherwise we can also use preprocessing instead of qr decomposition
+	# Standardize columns of X (with z-scores) before applying regularized regression
 
 	scaler = pre.StandardScaler()
 	data[4] = scaler.fit_transform(data[4])
@@ -227,5 +196,13 @@ def local_ridge_regression(data,to_predict,lam,degree,print_coef=False):
 	model = LocalRidge(lam=lam)
 	model.fit(X, data[3])
 	
-	return data[4][:,0], np.array(model.predict(X_build(to_predict,degree))) # years, predictionss 
+	# optional argument
+
+	if(print_coef):
+		print("model coefficients")
+		print(model.coef_,"\n")
+
+	years = data[4][:,0]
+	
+	return years, np.array(model.predict(X_build(to_predict,degree))) # years, predictionss 
 
