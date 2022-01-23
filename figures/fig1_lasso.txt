@@ -9,3 +9,4 @@ model coefficients
   0.00000000e+00] 
 
 mse:  0.08282766552442106
+Generalization MSE: 51.353236558691584
