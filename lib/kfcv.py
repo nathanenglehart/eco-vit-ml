@@ -294,7 +294,7 @@ def neural_network_kfcv(neural_network_function,data,k,seed,weight_penalty,activ
 			plt.ylabel('MLD')
 			plt.show()
 
-	print("completed:",mse_error/k)
+	#print("completed:",mse_error/k)
 	
 
 	return mse_error/k
