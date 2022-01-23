@@ -6,10 +6,10 @@ Please see main.pdf.
 
 
 # References
-Dr. Pieter Tans, NOAA/GML (gml.noaa.gov/ccgg/trends/) and Dr. Ralph Keeling, Scripps Institution of Oceanography (scrippsco2.ucsd.edu/).
-Wendling, Z. A., Emerson, J. W., de Sherbinin, A., Esty, D. C., et al. (2020). 2020
-Environmental Performance Index. New Haven, CT: Yale Center for Environmental
-Law & Policy. https://epi.yale.edu/ 
+Dr. Pieter Tans, NOAA/GML (gml.noaa.gov/ccgg/trends/) and Dr. Ralph Keeling, Scripps Institution of Oceanography (scrippsco2.ucsd.edu/) 2022.
+
+Wendling, Z. A., Emerson, J. W., de Sherbinin, A., Esty, D. C., et al. Environmental Performance Index. New Haven, CT: Yale Center for Environmental
+Law & Policy. 2020. https://epi.yale.edu/ 
 
 Scikit-learn: Machine Learning in Python, Pedregosa et al., JMLR 12, pp. 2825-2830, 2011.
 
