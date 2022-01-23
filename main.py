@@ -1,9 +1,5 @@
-import itertools
-
 import numpy as np
 import pandas as pd
-
-#get_all_degree_combinations(degrees, k):
 
 from lib.utils import get_all_degree_combinations
 from lib.utils import plot
@@ -23,6 +19,8 @@ from lib.reg import local_ridge_regression
 
 from lib.reg import neural_network
 from lib.kfcv import neural_network_kfcv
+
+from lib.kfcv import mean_squared_error
 
 # Nathan Englehart, Ishaq Kothari, Raul Segredo (Autumn 2021)
 
@@ -169,7 +167,14 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal lambda:",lam)
 
 		plot_reg(data,data,lasso_regression,lam,D,verbose)
-		print("mse across folds:",lasso_kfcv(lasso_regression,data,k,seed,lam,D,verbose))
+		
+		t_hat = lasso_regression(data,data,lam,D)[1]
+		t = data[3]
+
+		#print("t: ",t)
+		#print("t_hat:",t_hat[1])
+
+		print("mse: ",mean_squared_error(t,t_hat))
 
 	if(mode == 2):
 
