@@ -174,6 +174,7 @@ def driver(verbose,mode,country_names,seed,k):
 		#print("t: ",t)
 		#print("t_hat:",t_hat[1])
 
+		print("generalization mse:",lasso_kfcv(lasso_regression,data,k,seed,lam,D,verbose))
 		print("mse: ",mean_squared_error(t,t_hat))
 
 	if(mode == 2):
@@ -189,7 +190,11 @@ def driver(verbose,mode,country_names,seed,k):
 
 		plot(data,X[:,0],preds)
 
-		print("mse across folds:",neural_network_kfcv(neural_network,data,k,seed,lam,function,verbose))
+		t_hat = neural_network(data[4],data[3],data[4],lam,function)
+		t = data[3]
+
+		print("generalization mse:",neural_network_kfcv(neural_network,data,k,seed,lam,function,verbose))
+		print("mse:",mean_squared_error(t,t_hat))
 
 	if(mode == 3):
 
@@ -210,7 +215,12 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal lambda:",lam)
 
 		plot_reg(data,data,ridge_regression,lam,D,verbose)
-		print("mse across folds:",ridge_kfcv(ridge_regression,data,k,seed,lam,D,verbose))
+
+		t_hat = ridge_regression(data,data,lam,D)[1]
+		t = data[3]
+
+		print("generalization mse:",ridge_kfcv(ridge_regression,data,k,seed,lam,D,verbose))
+		print("mse:",mean_squared_error(t,t_hat))
 
 	if(mode == 4):
 		
@@ -225,7 +235,12 @@ def driver(verbose,mode,country_names,seed,k):
 		print("optimal lambda:",lam)
 		
 		plot_reg(data,data,local_ridge_regression,lam,D,verbose)
+
+		t_hat = local_ridge_regression(data,data,lam,D)[1]
+		t = data[3]
+
 		print("mse across folds:",ridge_kfcv(local_ridge_regression,data,k,seed,lam,D,verbose))
+		print("mse:",mean_squared_error(t,t_hat))
 
 if __name__ == "__main__":
 
@@ -238,7 +253,7 @@ if __name__ == "__main__":
 	# optimal parameters
 
 	verbose = True
-	mode = 1
+	mode = 3
 	countries = all_world_countries()
 	seed = 40
 	k = 5
